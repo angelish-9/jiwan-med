@@ -4,7 +4,7 @@ import Home from './pages/Home.jsx';
 import Signin from './pages/Signin.jsx';
 import Signup from './pages/Signup.jsx';
 import Pain from './category/pain.jsx';
-import AddProductForm from './components/product/AddProductForm.jsx';
+// import AddProductForm from './components/product/AddProductForm.jsx';
 import ProductList from './components/product/ProductList.jsx';
 import SingleProduct from './components/product/SingleProduct.jsx';
 import Vitamins from './category/vitamins.jsx';
@@ -37,7 +37,6 @@ function App() {
           <Route path="/category/vitamins" element={<Vitamins />} />
           <Route path="/category/wellness" element={<Wellness />} />
 
-          {/* <Route path="/add-product" element={<AddProductForm />} /> */}
           <Route path="/product/:productId" element={<SingleProduct />} />
           <Route path="/list-product" element={<ProductList />} />
 

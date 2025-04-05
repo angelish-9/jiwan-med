@@ -37,11 +37,15 @@ const SingleProduct = () => {
     }, [productId]);  // Trigger fetch again if productId changes
 
     if (loading) {
-        return <div>Loading...</div>;  // Show loading text while fetching data
+        return <div className="text-center text-lg font-semibold">Loading...</div>;  // Show loading text while fetching data
     }
 
     if (error) {
-        return <div>{error}</div>;  // Show error message if fetching failed
+        return <div className="text-center text-lg font-semibold text-red-500">{error}</div>;  // Show error message if fetching failed
+    }
+
+    if (!product) {
+        return <div className="text-center text-lg font-semibold">No product found.</div>;  // In case product is still null
     }
 
     const userRole = localStorage.getItem('role');
@@ -63,7 +67,7 @@ const SingleProduct = () => {
 
             if (response.data.success) {
                 alert('Product removed successfully');
-                navigate('/list-product'); 
+                navigate('/list-product');
             } else {
                 alert('Error removing product');
             }
@@ -74,32 +78,54 @@ const SingleProduct = () => {
     };
 
     return (
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto p-6 bg-white shadow-lg rounded-lg">
             {userRole === 'admin' && (
-                <>
-                    <p>
-                        <Link to={`/product/edit/${productId}`} className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
-                            Edit
-                        </Link>
-                    </p>
-
-                    <p>
-                        <button
-                            onClick={removeProduct}
-                            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors"
-                        >
-                            Remove Product
-                        </button>
-                    </p>
-                </>
+                <div className="text-right mb-4">
+                    <Link
+                        to={`/product/edit/${productId}`}
+                        className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                    >
+                        Edit
+                    </Link>
+                    <button
+                        onClick={removeProduct}
+                        className="ml-4 bg-red-500 text-white px-6 py-2 rounded-md hover:bg-red-700 transition-colors"
+                    >
+                        Remove Product
+                    </button>
+                </div>
             )}
 
+            {/* Product Details */}
             <div className="product-details mt-6">
-                <h3 className="text-xl font-bold">{product.name}</h3>
-                <p>{product.description}</p>
-                <p><strong>Price:</strong> ${product.price}</p>
-                {product.bestseller && (
-                    <span className="text-xs text-white bg-green-500 px-2 py-1 rounded-full">Bestseller</span>
+                {product && (
+                    <>
+                        <h3 className="text-3xl font-semibold mb-2">{product.name}</h3>
+                        <p className="text-lg text-gray-600">{product.description}</p>
+                        <p className="text-xl font-bold text-green-600 mt-2">
+                            <strong>Price:</strong> ${product.price}
+                        </p>
+
+                        {product.bestseller && (
+                            <span className="text-xs text-white bg-green-500 px-3 py-1 rounded-full mt-2 inline-block">
+                                Bestseller
+                            </span>
+                        )}
+
+                        {/* Display the product images */}
+                        {product.image && product.image.length > 0 && (
+                            <div className="mt-6">
+                                <h4 className="font-semibold text-lg mb-2">Product Images:</h4>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                        <img
+                                            src={`http://localhost:5000${product.image}`}
+                                            alt={`Product Image`}
+                                            className="w-full h-auto object-cover rounded-lg shadow-md"
+                                        />
+                                </div>
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
         </div>
