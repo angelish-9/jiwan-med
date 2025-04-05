@@ -56,13 +56,12 @@ const Navbar = () => {
         {userRole === 'admin' && (
           <>
 
-          <a href="/add-product">Add Product</a>
-          <a href="/add">Admin Add Product</a>
-
+          <a href="/admin">Admin Dashboard</a>
+          
           </>
 
         )}
-        <a href="/list-product">Product List</a>
+      
       </nav>
 
       {/* Sub Navigation */}
@@ -84,7 +83,7 @@ const Navbar = () => {
         <Link to="/category/pain.jsx" className="hover:text-gray-700">Pain & Illness Relief</Link>
         <Link to="/category/wellness" className="hover:text-gray-700">Wellness & Fitness</Link>
         <Link to="/category/vitamin" className="hover:text-gray-700">Vitamins & Nutrition</Link>
-        <a href="../category/pain.jsx" className="hover:text-gray-700">First Aid</a>
+        <a href="/category/pain.jsx" className="hover:text-gray-700">First Aid</a>
         <a href="/category/devices" className="hover:text-gray-700">Devices</a>
         <a href="/category/stomach-care" className="hover:text-gray-700">Stomach Care</a>
         <a href="/category/family-care" className="hover:text-gray-700">Family Care</a>

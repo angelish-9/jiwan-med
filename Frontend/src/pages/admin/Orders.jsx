@@ -4,6 +4,7 @@ import { backendUrl, currency } from "../App";
 import { useState } from "react";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import App from "../../App";
 
 const Orders = ({ token }) => {
   const [orders, setOrders] = useState([]);

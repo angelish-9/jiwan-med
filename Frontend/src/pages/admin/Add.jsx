@@ -20,8 +20,6 @@ const Add = () => {
     description: "",
     price: "",
     category: "",
-    subCategory: "",
-    sizes: [],
     bestseller: false,
     image: null,
   });
@@ -34,12 +32,8 @@ const Add = () => {
     setProduct({ ...product, [name]: value });
   };
 
-  const handleSizeChange = (e) => {
-    setProduct({ ...product, sizes: e.target.value.split(",") });
-  };
-
   const handleFileChange = (e) => {
-    const file = e.target.files[0]; // Only take the first image
+    const file = e.target.files[0];
     setProduct({ ...product, image: file });
   };
 
@@ -54,22 +48,17 @@ const Add = () => {
       formData.append("description", product.description);
       formData.append("price", product.price);
       formData.append("category", product.category);
-      formData.append("subCategory", product.subCategory);
-      formData.append("sizes", JSON.stringify(product.sizes));
       formData.append("bestseller", product.bestseller);
-
-      // Append image if available
       if (product.image) {
         formData.append("image", product.image);
       }
 
-      const token = localStorage.getItem('token');
-      console.log(token);
+      const token = localStorage.getItem("token");
 
       const response = await axios.post("http://localhost:5000/api/products/add", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -79,8 +68,6 @@ const Add = () => {
         description: "",
         price: "",
         category: "",
-        subCategory: "",
-        sizes: [],
         bestseller: false,
         image: null,
       });
@@ -97,29 +84,83 @@ const Add = () => {
       <Navbar />
       <div className="flex min-h-screen">
         <Sidebar />
-
-        <div className="flex-1 p-8 bg-gray-100">
-          <h2 className="text-2xl font-semibold mb-4">Add New Product</h2>
+        <div className="flex-1 p-8 bg-gray-50">
+          <h2 className="text-2xl font-bold mb-6">Add New Product</h2>
           {message && <p className="mb-4 text-green-600">{message}</p>}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <input type="text" name="name" placeholder="Product Name" onChange={handleChange} required className="w-full p-2 border" />
-            <textarea name="description" placeholder="Description" onChange={handleChange} required className="w-full p-2 border"></textarea>
-            <input type="number" name="price" placeholder="Price" onChange={handleChange} required className="w-full p-2 border" />
-            <input type="text" name="category" placeholder="Category" onChange={handleChange} required className="w-full p-2 border" />
-            <input type="text" name="subCategory" placeholder="Sub-Category" onChange={handleChange} className="w-full p-2 border" />
-            <input type="text" name="sizes" placeholder="Sizes (comma-separated)" onChange={handleSizeChange} className="w-full p-2 border" />
+
+          <form onSubmit={handleSubmit} className="space-y-5 max-w-xl">
+            <input
+              type="text"
+              name="name"
+              placeholder="Product Name"
+              onChange={handleChange}
+              value={product.name}
+              required
+              className="w-full p-3 border rounded"
+            />
+
+            <textarea
+              name="description"
+              placeholder="Description"
+              onChange={handleChange}
+              value={product.description}
+              required
+              className="w-full p-3 border rounded"
+            ></textarea>
+
+            <input
+              type="number"
+              name="price"
+              placeholder="Price"
+              onChange={handleChange}
+              value={product.price}
+              required
+              className="w-full p-3 border rounded"
+            />
 
             <label className="block">
-              Bestseller:
-              <select name="bestseller" onChange={handleChange} className="w-full p-2 border mt-1">
+              <span className="block mb-1 font-medium">Category</span>
+              <select
+                name="category"
+                onChange={handleChange}
+                value={product.category}
+                required
+                className="w-full p-3 border rounded"
+              >
+                <option value="">Select a Category</option>
+                <option value="Pain & Relief">Pain & Relief</option>
+                <option value="Wellness & Vitamins">Wellness & Vitamins</option>
+                <option value="First Aid">First Aid</option>
+                <option value="Chronic Care">Chronic Care</option>
+                <option value="Personal Care">Personal Care</option>
+              </select>
+            </label>
+
+            <label className="block">
+              <span className="block mb-1 font-medium">Bestseller</span>
+              <select
+                name="bestseller"
+                onChange={handleChange}
+                value={product.bestseller}
+                className="w-full p-3 border rounded"
+              >
                 <option value="false">No</option>
                 <option value="true">Yes</option>
               </select>
             </label>
 
-            <input type="file" onChange={handleFileChange} required className="w-full" />
+            <input
+              type="file"
+              onChange={handleFileChange}
+              required
+              className="w-full"
+            />
 
-            <button type="submit" disabled={loading} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            <button
+              type="submit"
+              disabled={loading}
+              className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700"
+            >
               {loading ? "Adding..." : "Add Product"}
             </button>
           </form>

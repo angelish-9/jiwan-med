@@ -12,12 +12,12 @@ import Footer from "../components/Footer";
 const Home = () => {
   return (
     <div>
-      <nav className="bg-gray-800 text-white py-4">
+      <nav className="fixed top-0 left-0 w-full z-50 bg-white shadow">
         {/* Navigation content here */}
       <Navbar />
       </nav>
       {/* Hero Section Below Navbar */}
-      <div>
+      <div className="mt-64"> {/* Adjust margin to avoid overlap with navbar */}
         <HeroSection />
       </div>
       <div>
