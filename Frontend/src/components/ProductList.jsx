@@ -1,8 +1,13 @@
 import ProductCard from "./ProductCard";
+import product1 from '../assets/product1.jpeg';
+import product2 from '../assets/product2.jpg';
+import product3 from '../assets/product3.jpg';
+import product4 from '../assets/product4.jpeg';
+
 
 const products = [
   {
-    image: "/images/product1.jpg",
+    image: product1,
     name: "Vitamin B Complex",
     rating: 5,
     reviews: 120,
@@ -10,7 +15,7 @@ const products = [
     stock: 15,
   },
   {
-    image: "/images/product2.jpg",
+    image: product2,
     name: "Metformin Tablets",
     rating: 4,
     reviews: 85,
@@ -18,7 +23,7 @@ const products = [
     stock: 50,
   },
   {
-    image: "/images/product3.jpg",
+    image: product3,
     name: "Tusq-D Cough Syrup",
     rating: 5,
     reviews: 200,
@@ -26,7 +31,7 @@ const products = [
     stock: 30,
   },
   {
-    image: "/images/product3.jpg",
+    image: product4,
     name: "Desire Condom",
     rating: 5,
     reviews: 200,

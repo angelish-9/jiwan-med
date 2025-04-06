@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaFacebookF, FaTwitter, FaInstagram, FaPinterestP, FaDribbble, FaGoogle, FaArrowUp } from "react-icons/fa";
+import logo from "../assets/logo.png"; 
 
 const Footer = () => {
   const [showScroll, setShowScroll] = useState(false);
@@ -87,8 +88,8 @@ const Footer = () => {
       <div className="bg-black py-4 text-gray-500 text-center flex flex-col md:flex-row justify-between items-center px-6">
         {/* Logo and Name */}
         <div className="flex items-center space-x-2">
-          <img src="/images/logo.png" alt="Jiwan Medico" className="h-6" />
-          <span className="text-xl font-bold text-white">Jiwan Medico</span>
+                    <img src={logo} alt="Logo" className="w-10 h-10 object-contain" />
+                    <span className="text-xl font-bold text-white">Jiwan Medico</span>
         </div>
 
         {/* Navigation Links */}

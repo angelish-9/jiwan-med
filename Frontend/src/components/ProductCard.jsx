@@ -1,23 +1,48 @@
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const ProductCard = ({ image, name, rating, reviews, price, stock }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-200 hover:-translate-y-2">
-      <img src={image} alt={name} className="w-full h-48 object-cover" />
-      <div className="p-4">
-        <h3 className="text-lg font-bold">{name}</h3>
-        <div className="flex items-center text-yellow-500 mt-2">
-          {"★".repeat(rating)}
-          <span className="text-gray-600 text-sm ml-1">({reviews})</span>
+    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 w-full max-w-xs mx-auto">
+      <img
+        src={image}
+        alt={name}
+        className="w-full h-48 object-cover rounded-t-xl"
+      />
+      <div className="p-4 space-y-2">
+        <h3 className="text-lg font-semibold text-gray-800 line-clamp-1">
+          {name}
+        </h3>
+
+        <div className="flex items-center text-yellow-500 text-sm">
+          {Array(rating).fill("★").join("")}
+          <span className="text-gray-500 ml-2">({reviews})</span>
         </div>
-        <p className="text-gray-600 text-sm mt-1">{stock > 0 ? "In Stock" : "Out of Stock"}</p>
-        <p className="text-red-500 font-bold text-lg mt-2">${price}</p>
+
+        <div className="flex justify-between items-center mt-2">
+          <p
+            className={`text-sm font-medium ${
+              stock > 0 ? "text-green-600" : "text-red-500"
+            }`}
+          >
+            {stock > 0 ? "In Stock" : "Out of Stock"}
+          </p>
+
+          <div className="flex items-center gap-2">
+            <p className="text-lg font-bold text-red-600">${price.toFixed(2)}</p>
+            <Link
+              to={`/product/${encodeURIComponent(name)}`}
+              className="px-3 py-1 text-sm font-medium text-white bg-blue-600 rounded-full hover:bg-blue-700 transition"
+            >
+              View
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-// PropTypes for validation
 ProductCard.propTypes = {
   image: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,

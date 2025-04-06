@@ -1,41 +1,38 @@
-
 "use client";
+
+import home_icon1 from "../assets/home_icon1.png";
+import home_icon2 from "../assets/home_icon2.png";
+import home_icon3 from "../assets/home_icon3.png";
+import home_doc from "../assets/home_doc.png";
 
 const SearchBar = () => {
   return (
     <input
       type="search"
       placeholder="What are you searching for ?"
-      className="self-stretch px-5 py-6 mt-2.5 max-w-full text-base text-black bg-white border border-solid border-[#DADDDF] min-h-[71px] rounded-[49px] w-[1114px]"
+      className="self-stretch px-5 py-6 mt-8 max-w-full text-base text-black bg-white border border-solid border-[#DADDDF] min-h-[71px] rounded-[49px] w-[1114px]"
       aria-label="Search products"
     />
   );
 };
 
-const IconCircle = () => {
+const IconCircle = ({ iconSrc }) => {
   return (
-    <div
-      className={`flex gap-2.5 justify-center items-center px-2.5 bg-blue-600 h-[110px] min-h-[110px] rounded-[70px] w-[110px]`}
-    >
-      <img
-        loading="lazy"
-        className="object-contain self-stretch my-auto w-20 aspect-square"
-        alt="Healthcare icon"
-      />
+    <div className="flex justify-center items-center bg-blue-600 h-[110px] w-[110px] rounded-full">
+      <img src={iconSrc} alt="Icon" className="w-14 h-14 object-contain" />
     </div>
   );
 };
 
 const HeroContent = () => {
   return (
-    <article className="z-0 self-stretch my-auto text-black min-w-60 w-[699px] max-md:max-w-full">
-      <h1 className="text-6xl font-bold leading-[96px] tracking-[3.2px] max-md:max-w-full max-md:text-4xl max-md:leading-[66px]">
+    <article className="text-black max-w-xl">
+      <h1 className="text-5xl font-bold leading-[96px] tracking-[3.2px] max-md:text-4xl max-md:leading-[66px]">
         Wellness Medicine &<br />
-        Suggestion
-        <br />
-        Care
+       <p className="-ml-28">Suggestion  Care</p>
+       
       </h1>
-      <p className="mt-8 text-base font-medium leading-6 max-md:max-w-full">
+      <p className="mt-8 text-base font-medium leading-6">
         A one-stop digital healthcare shop for a variety of prescription drugs, health and wellness items, vitamins, diet and exercise supplements, herbal goods, baby and mother care items and cosmetics.
         <br />
         Order online and have your medicine delivered to your door.
@@ -47,36 +44,36 @@ const HeroContent = () => {
 const HeroSection = () => {
   return (
     <main className="overflow-hidden bg-white">
-      <section className="flex flex-col justify-center items-center py-3 pr-2.5 pl-1 w-full min-h-[706px] max-md:max-w-full">
-        <div className="flex relative justify-center items-start w-full max-w-[1901px] min-h-[604px] max-md:max-w-full">
+      <section className="flex flex-col items-center py-10 w-full min-h-[706px]">
+        <div className="flex justify-between items-center gap-8 w-full max-w-[1400px] px-4 flex-wrap">
+          
+          {/* Left Side Content */}
           <HeroContent />
 
-          <IconCircle
-            iconSrc="https://cdn.builder.io/api/v1/image/assets/c6bff8acd2854098b340ca41cbd4cebb/fd63d656c0ba0a6048b080611bab6b904a0f3008011d2969127274bca90729b7?placeholderIfAbsent=true"
-            className="absolute right-[726px] top-[152px]"
-          />
-
-          <IconCircle
-            iconSrc="https://cdn.builder.io/api/v1/image/assets/c6bff8acd2854098b340ca41cbd4cebb/0198b4f8bf0c36c69db9bb3350fbf4d8e7d9f7169ead18e02a9f59dc15e19653?placeholderIfAbsent=true"
-            className="absolute right-[695px] top-[217px]"
-          />
-
-          <IconCircle
-            iconSrc="https://cdn.builder.io/api/v1/image/assets/c6bff8acd2854098b340ca41cbd4cebb/0fe098fba2d15f67ab809d9649926d0d43863657030b87e58643a24f4a473892?placeholderIfAbsent=true"
-            className="absolute right-[661px] top-[87px]"
-          />
-
-          <img
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/c6bff8acd2854098b340ca41cbd4cebb/e0249b470fe1461503f4a447ac68e40f82762719f91f3b6fe7f9f234263ac339?placeholderIfAbsent=true"
-            className="object-contain z-0 shrink-0 self-stretch my-auto aspect-[0.97] min-w-60 w-[408px]"
-            alt="Healthcare illustration"
-          />
+          {/* Right Side - Illustration and Icons */}
+          <div className="relative flex flex-col items-center justify-center">
+            <img
+              src={home_doc}
+              alt="Healthcare Illustration"
+              className="w-[400px] h-auto z-0"
+            />
+            <div className="absolute -top-12 -left-8">
+              <IconCircle iconSrc={home_icon1} />
+            </div>
+            <div className="absolute top-[62px] left-[-152px]">
+              <IconCircle iconSrc={home_icon2} />
+            </div>
+            <div className="absolute top-[170px] left-[-30px]">
+              <IconCircle iconSrc={home_icon3} />
+            </div>
+          </div>
         </div>
 
+        {/* Search Bar */}
         <SearchBar />
       </section>
     </main>
   );
 };
-export default HeroSection; 
+
+export default HeroSection;

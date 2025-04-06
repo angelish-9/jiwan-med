@@ -4,59 +4,59 @@ const features = [
   {
     icon: <FaPaperPlane className="text-red-500 text-3xl" />,
     title: "Emergency Delivery System",
-    description: "Using our free billing software, you can easily create useful documents. It includes quotations, estimates, and accurate GST invoices.",
+    description: "Get life-saving medicines delivered to your doorstep within 2 hours during emergencies.",
   },
   {
     icon: <FaMapMarkedAlt className="text-red-500 text-3xl" />,
     title: "Dr. Appointment System",
-    description: "Monitor orders seamlessly with our integrated order tracking system.",
+    description: "Book doctor consultations with ease — choose physical, video, or audio appointments.",
   },
   {
     icon: <FaPalette className="text-red-500 text-3xl" />,
     title: "Real Time Pharmacist Chat",
-    description: "Personalize your billing experience with various themes.",
+    description: "Chat live with certified pharmacists for instant support and prescription approvals.",
   },
   {
     icon: <FaMoneyBillWave className="text-red-500 text-3xl" />,
     title: "Chronic Patient PromoCode",
-    description: "Keep track of your business expenses in an organized manner.",
-  },
-{
-    icon: <FaFileInvoice className="text-red-500 text-3xl" />,
-    title: "Prescription Management",
-    description: "Manage your business receivables and payables efficiently using our GST billing software.",
+    description: "Special discounts for patients with diabetes, thyroid, TB, and other chronic conditions.",
   },
   {
     icon: <FaFileInvoice className="text-red-500 text-3xl" />,
-    title: "Delivery Challan",
-    description: "Generate delivery challans easily with integrated GST billing software.",
+    title: "Prescription Management",
+    description: "Easily upload, store, and track prescriptions for a smooth medicine ordering process.",
+  },
+  {
+    icon: <FaFileInvoice className="text-red-500 text-3xl" />,
+    title: "Delivery Tracking",
+    description: "Track your medicine orders in real-time with live delivery updates and notifications.",
   },
   {
     icon: <FaChartBar className="text-red-500 text-3xl" />,
     title: "Lab Test",
-    description: "Generate comprehensive business reports for better decision-making.",
+    description: "Book lab tests online and get results delivered to your dashboard or email.",
   },
   {
     icon: <FaCloudUploadAlt className="text-red-500 text-3xl" />,
     title: "Automatic Data Backup",
-    description: "Keep your data secure with automatic backups.",
+    description: "Your data is safely and automatically backed up to prevent loss or damage.",
   },
   {
     icon: <FaChartBar className="text-red-500 text-3xl" />,
-    title: "Regular / Thermal Printer",
-    description: "Compatible with regular and thermal printers for seamless printing.",
+    title: "Hospital Devices",
+    description: "Browse and order essential hospital equipment for home and professional use.",
   },
   {
     icon: <FaStore className="text-red-500 text-3xl" />,
-    title: "Online Store",
-    description: "Integrate your billing software with your online store for smooth operations.",
+    title: "Physical Store",
+    description: "Visit our local pharmacy for in-person service and product pickup.",
   },
 ];
 
 const FeaturesSection = () => {
   return (
     <section className="bg-white p-6">
-      <h2 className="text-4xl font-bold text-center mb-6">Features of GST Billing and Accounting Software</h2>
+      <h2 className="text-4xl font-bold text-center mb-6">Features of Jiwan Medico</h2>
       <div className="flex overflow-x-auto space-x-4 pb-4">
         {features.map((feature, index) => (
           <div key={index} className="min-w-[250px] border rounded-lg p-4 hover:shadow-lg transition-shadow">
