@@ -1,12 +1,11 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useState, useEffect, Suspense } from 'react';
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import { useState, useEffect, Suspense,lazy } from 'react';
+// import '@fortawesome/fontawesome-free/css/all.min.css';
 import Home from './pages/Home.jsx';
 import Signin from './pages/Signin.jsx';
 import Signup from './pages/Signup.jsx';
 import ProductPage from './pages/ProductPage.jsx';
 import Pain from './category/pain.jsx';
-// import AddProductForm from './components/product/AddProductForm.jsx';
 import ProductList from './components/product/ProductList.jsx';
 import SingleProduct from './components/product/SingleProduct.jsx';
 import Vitamins from './category/vitamins.jsx';
@@ -16,6 +15,7 @@ import PharmacistPanel from './pages/PharmacistPanel.jsx';
 import AdminDashboard from './pages/admin/AdminDashboard.jsx';
 import FAQPage from "./pages/FAQpage.jsx";
 import Add from './pages/admin/Add.jsx';
+const CategoryProducts = lazy(() => import("./components/product/CategoryProducts.jsx"));
 import './App.css';
 
 function App() {
@@ -48,6 +48,8 @@ function App() {
 
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/add" element={<Add token={token} />} />
+
+          <Route path="product/category/:category" element={<CategoryProducts />} />
 
           {/* Optionally, a fallback route: */}
           {/* <Route path="*" element={<Navigate to="/home" />} /> */}

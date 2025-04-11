@@ -128,11 +128,12 @@ const Add = () => {
                 className="w-full p-3 border rounded"
               >
                 <option value="">Select a Category</option>
-                <option value="Pain & Relief">Pain & Relief</option>
-                <option value="Wellness & Vitamins">Wellness & Vitamins</option>
-                <option value="First Aid">First Aid</option>
-                <option value="Chronic Care">Chronic Care</option>
-                <option value="Personal Care">Personal Care</option>
+                <option value="pain_and_illness_relief">Pain & Illness Relief</option>
+                <option value="wellness_and_fitness">Wellness & Fitness</option>
+                <option value="vitamins_and_nutrition">Vitamins and Nutrition</option>
+                <option value="first_aid">First Aid</option>
+                <option value="chronic_care">Chronic Care</option>
+                <option value="personal_care">Personal Care</option>
               </select>
             </label>
 

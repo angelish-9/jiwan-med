@@ -11,49 +11,49 @@ const addProduct = async (req, res) => {
     try {
         const { name, description, price, category, bestseller } = req.body;
 
-        
-        const image = req.file; 
 
-        
+        const image = req.file;
+
+
         if (!image) {
             return res.status(400).json({ success: false, message: 'Image is required.' });
         }
 
-        
+
         const imageDirectory = path.join(process.cwd(), 'uploads', 'product-images');
 
-        
+
         if (!fs.existsSync(imageDirectory)) {
             fs.mkdirSync(imageDirectory, { recursive: true });
         }
 
-        
+
         const imageName = `${Date.now()}-${image.originalname}`;
         const imagePath = path.join(imageDirectory, imageName);
 
-        
+
         fs.copyFileSync(image.path, imagePath);
 
-        
+
         fs.unlinkSync(image.path);
 
-        
+
         const imageUrl = `/uploads/product-images/${imageName}`;
 
-        
+
         const productData = {
             name,
             description,
             category,
             price: Number(price),
             bestseller: bestseller === "true" ? true : false,
-            image: imageUrl, 
+            image: imageUrl,
             date: Date.now()
         };
 
         console.log(productData);
 
-        
+
         const product = new Product(productData);
         await product.save();
 
@@ -76,16 +76,16 @@ const removeProduct = async (req, res) => {
 }
 const singleProduct = async (req, res) => {
     try {
-        const { productId } = req.params;  
-        const product = await Product.findById(productId);  
+        const { productId } = req.params;
+        const product = await Product.findById(productId);
 
         if (!product) {
             return res.status(404).json({ success: false, message: 'Product not found' });
         }
 
-        res.json({ success: true, product });  
+        res.json({ success: true, product });
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });  
+        res.status(500).json({ success: false, message: error.message });
     }
 };
 
@@ -102,4 +102,20 @@ const listProduct = async (req, res) => {
 
 }
 
-export { addProduct, removeProduct, listProduct, singleProduct }
+
+const categoryProduct = async (req, res) => {
+    try {
+        const category = req.params.category;
+        const products = await Product.find({ category });
+
+        if (!products) {
+            return res.status(404).json({ message: 'No products found for this category' });
+        }
+
+        res.json(products);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+}
+
+export { addProduct, removeProduct, listProduct, singleProduct, categoryProduct }

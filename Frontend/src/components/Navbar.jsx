@@ -1,9 +1,19 @@
 import { Link } from "react-router-dom";
-import logo from "../assets/logo.png"; 
+import logo from "../assets/logo.png";
 
 const userRole = localStorage.getItem("role");
 
 const Navbar = () => {
+
+  const categories = [
+    "Pain_and_Illness_Relief",
+    "Wellness_and_Fitness",
+    "Vitamins_and_Nutrition",
+    "First_Aid",
+    "Chronic_Care",
+    "Personal_Care"
+  ];
+
   return (
     <header className="w-full">
 
@@ -59,15 +69,13 @@ const Navbar = () => {
       </div>
 
       {/* Category Navigation */}
-      <nav className="flex flex-wrap gap-5 justify-center items-center px-6 py-2.5 mt-4 text-lg font-semibold text-black border-t border-b border-black bg-white">
-        <Link to="/category/pain" className="hover:text-gray-700">Pain & Illness Relief</Link>
-        <Link to="/category/wellness" className="hover:text-gray-700">Wellness & Fitness</Link>
-        <Link to="/category/vitamin" className="hover:text-gray-700">Vitamins & Nutrition</Link>
-        <Link to="/category/first-aid" className="hover:text-gray-700">First Aid</Link>
-        <Link to="/category/devices" className="hover:text-gray-700">Devices</Link>
-        <Link to="/category/stomach-care" className="hover:text-gray-700">Stomach Care</Link>
-        <Link to="/category/family-care" className="hover:text-gray-700">Family Care</Link>
-      </nav>
+      <div className="container mx-auto flex justify-center space-x-6 py-2">
+        {categories.map((cat) => (
+          <Link key={cat.toLowerCase()} to={`/product/category/${cat.toLowerCase()}`} className="hover:text-pink-600 capitalize">
+            {cat.replaceAll('_', ' ')}
+          </Link>
+        ))}
+      </div>
 
     </header>
   );
