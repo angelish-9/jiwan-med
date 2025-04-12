@@ -17,6 +17,7 @@ import AdminDashboard from './pages/admin/AdminDashboard.jsx';
 import FAQPage from "./pages/FAQpage.jsx";
 import Add from './pages/admin/Add.jsx';
 const CategoryProducts = lazy(() => import("./components/product/CategoryProducts.jsx"));
+const CartPage = lazy(() => import("./pages/CartPage.jsx"));
 import ChatComponent from "./components/ChatComponent.jsx";
 import PharmacistDashboard from './components/PharmacistDashboard';
 
@@ -58,6 +59,8 @@ function App() {
           <Route path="/admin/add" element={<Add token={token} />} />
 
           <Route path="product/category/:category" element={<CategoryProducts />} />
+
+          <Route path="/cart" element={<CartPage />} />
 
           {/* Add the ChatComponent route */}
           <Route path="/consult-pharmacists" element={<ChatComponent receiverId={pharmacistId} receiverName={pharmacistName} />} />

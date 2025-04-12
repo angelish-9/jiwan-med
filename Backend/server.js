@@ -12,6 +12,7 @@ import cookieParser from 'cookie-parser';
 import userRouter from './routes/userRoute.js';
 import authRoutes from './routes/authRoutes.js';
 import productRouter from './routes/productRoute.js';
+import cartRouter from './routes/cartRoute.js';
 import chatRoutes from './routes/chatRoutes.js'; // <-- Add this route
 
 // Import Message model
@@ -52,6 +53,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRouter);
+app.use('/api/cart', cartRouter);
 app.use('/api/chat', chatRoutes); // <-- Chat route
 
 // Socket.IO logic

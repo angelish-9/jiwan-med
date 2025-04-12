@@ -56,6 +56,9 @@ const Navbar = () => {
         <div className="flex gap-2.5 text-lg font-semibold text-black max-md:mt-4">
           {token && userRole ? (
             <>
+              <Link to="/cart" className="hover:text-pink-600">Cart</Link>
+              <span>|</span>
+
               <Link to="/profile" className="hover:underline">Profile</Link>
               <span>|</span>
               <button onClick={handleLogout} className="hover:underline text-red-600">Logout</button>

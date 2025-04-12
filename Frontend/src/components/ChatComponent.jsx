@@ -33,12 +33,16 @@ const ChatComponent = () => {
     const roomId = getRoomId(userId, pharmacistId);
 
     if (userRole === 'pharmacist') {
-      axios.get(`http://localhost:5000/api/chat/senders/${userId}`)
+      console.log(userRole === 'pharmacist')
+      axios.get(`http://localhost:5000/api/chat/senders/${pharmacistId}`)
         .then(res => setSenders(res.data))
         .catch(err => console.error('Error loading senders:', err));
 
       socket.on('receive_private_message', (data) => {
         if (data.receiverId === userId) {
+
+          console.log('-');
+          console.log(data.receiverId === userId);
           setSenders(prev => {
             const exists = prev.some(s => s.senderId === data.senderId);
             if (!exists) {
