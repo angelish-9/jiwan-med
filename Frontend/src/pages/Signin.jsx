@@ -24,6 +24,7 @@ const SignIn = () => {
       if (response.ok) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("role", data.role);
+        localStorage.setItem("user", JSON.stringify(data.user));
 
         alert("Login Successful!");
 

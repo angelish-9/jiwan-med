@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useState, useEffect, Suspense,lazy } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 // import '@fortawesome/fontawesome-free/css/all.min.css';
 import Home from './pages/Home.jsx';
 import Signin from './pages/Signin.jsx';
@@ -17,14 +17,21 @@ import AdminDashboard from './pages/admin/AdminDashboard.jsx';
 import FAQPage from "./pages/FAQpage.jsx";
 import Add from './pages/admin/Add.jsx';
 const CategoryProducts = lazy(() => import("./components/product/CategoryProducts.jsx"));
+import ChatComponent from "./components/ChatComponent.jsx";
+import PharmacistDashboard from './components/PharmacistDashboard';
+
 import './App.css';
 
 function App() {
-  const [token, setToken] = useState(localStorage.getItem('token') || '')
+  const [token, setToken] = useState(localStorage.getItem('token') || '');
 
   useEffect(() => {
-    localStorage.setItem('token', token)
+    localStorage.setItem('token', token);
   }, [token]);
+
+  // Define pharmacist details for chat functionality
+  const pharmacistId = '67fa35639fe7c1d32b2f8800'; 
+  const pharmacistName = 'Dr. John Doe'; 
 
   return (
     <div className="min-h-screen">
@@ -47,11 +54,15 @@ function App() {
           <Route path="/list-product" element={<ProductList />} />
           <Route path="/product/:name" element={<ProductPage />} />
 
-
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/add" element={<Add token={token} />} />
 
           <Route path="product/category/:category" element={<CategoryProducts />} />
+
+          {/* Add the ChatComponent route */}
+          <Route path="/consult-pharmacists" element={<ChatComponent receiverId={pharmacistId} receiverName={pharmacistName} />} />
+
+          <Route path="/pharmacist-dashboard" element={<PharmacistDashboard />} />  {/* Dashboard Page */}
 
           {/* Optionally, a fallback route: */}
           {/* <Route path="*" element={<Navigate to="/home" />} /> */}
