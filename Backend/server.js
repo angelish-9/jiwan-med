@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 
 import cookieParser from "cookie-parser";
+import userRouter from './routes/userRoute.js';
 import authRoutes from "./routes/authRoutes.js";
 import productRouter from "./routes/productRoute.js";
 
@@ -34,6 +35,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routes
+app.use('/api/user', userRouter);
 app.use("/api/auth", authRoutes);  
 app.use("/api/products", productRouter);  
 

@@ -1,6 +1,6 @@
 
 import orderModel from "../models/oderModel.js";
-import { userModel } from "../models/userModel.js";
+import { User } from "../models/User.js";
 import Stripe from 'stripe'
 import razorpay from 'razorpay'
 
@@ -36,7 +36,7 @@ const razorpayInstance = new razorpay({
         const newOrder = new orderModel(orderData);
         await newOrder.save();
 
-        await userModel.findByIdAndUpdate(userId, {cartData:[]});
+        await User.findByIdAndUpdate(userId, {cartData:[]});
         res.json({success:true, message:"Order Placed Successfully"})
 
         
@@ -157,7 +157,7 @@ const razorpayInstance = new razorpay({
      const orderInfo = await razorpayInstance.orders.fetch(razorpay_order_id)
      if(orderInfo.status==='paid'){
       await orderModel.findByIdAndUpdate(orderInfo.receipt, {payment:true});
-      await userModel.findByIdAndUpdate(userId, {cartData:[]});
+      await User.findByIdAndUpdate(userId, {cartData:[]});
       res.json({success:true, message:"Payment Successfull"})
      }
      else{

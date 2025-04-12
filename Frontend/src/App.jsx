@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense,lazy } from 'react';
 import Home from './pages/Home.jsx';
 import Signin from './pages/Signin.jsx';
 import Signup from './pages/Signup.jsx';
+const Profile = lazy(() => import("./pages/Profile.jsx"));
 import ProductPage from './pages/ProductPage.jsx';
 import Pain from './category/pain.jsx';
 import ProductList from './components/product/ProductList.jsx';
@@ -33,6 +34,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/doctor-panel" element={<DoctorPanel />} />
           <Route path="/pharmacist-panel" element={<PharmacistPanel />} />
           <Route path="/faq" element={<FAQPage />} />

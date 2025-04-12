@@ -1,9 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 
-const userRole = localStorage.getItem("role");
-
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const token = localStorage.getItem("token");
+  const userRole = localStorage.getItem("role");
 
   const categories = [
     "Pain_and_Illness_Relief",
@@ -11,12 +13,16 @@ const Navbar = () => {
     "Vitamins_and_Nutrition",
     "First_Aid",
     "Chronic_Care",
-    "Personal_Care"
+    "Personal_Care",
   ];
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/signin");
+  };
 
   return (
     <header className="w-full">
-
       {/* Top Banner */}
       <div className="flex justify-center items-center bg-black px-4 py-2 text-white text-sm font-medium">
         <p className="text-center max-w-[861px]">
@@ -46,11 +52,21 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Right: Auth */}
+        {/* Right: Auth/Profile */}
         <div className="flex gap-2.5 text-lg font-semibold text-black max-md:mt-4">
-          <a href="/signin" className="hover:underline">Login</a>
-          <span>|</span>
-          <a href="/signup" className="hover:underline">Sign Up</a>
+          {token && userRole ? (
+            <>
+              <Link to="/profile" className="hover:underline">Profile</Link>
+              <span>|</span>
+              <button onClick={handleLogout} className="hover:underline text-red-600">Logout</button>
+            </>
+          ) : (
+            <>
+              <a href="/signin" className="hover:underline">Login</a>
+              <span>|</span>
+              <a href="/signup" className="hover:underline">Sign Up</a>
+            </>
+          )}
         </div>
       </nav>
 
@@ -71,12 +87,15 @@ const Navbar = () => {
       {/* Category Navigation */}
       <div className="container mx-auto flex justify-center space-x-6 py-2">
         {categories.map((cat) => (
-          <Link key={cat.toLowerCase()} to={`/product/category/${cat.toLowerCase()}`} className="hover:text-pink-600 capitalize">
-            {cat.replaceAll('_', ' ')}
+          <Link
+            key={cat.toLowerCase()}
+            to={`/product/category/${cat.toLowerCase()}`}
+            className="hover:text-pink-600 capitalize"
+          >
+            {cat.replaceAll("_", " ")}
           </Link>
         ))}
       </div>
-
     </header>
   );
 };

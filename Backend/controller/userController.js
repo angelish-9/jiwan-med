@@ -1,4 +1,4 @@
-import { userModel } from "../models/userModel.js";
+import User  from "../models/User.js";
 import validator from 'validator'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
@@ -15,7 +15,7 @@ const loginUser = async (req, res) => {
       return res.json({ success: false, message: "Enter a valid email" })
     }
 
-    const user = await userModel.findOne({ email });
+    const user = await User.findOne({ email });
     if (!user) {
       res.json({ success: false, message: "User doesn't exist" })
 
@@ -44,7 +44,7 @@ const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
     // this checks whether user is unique or not
-    const exists = await userModel.findOne({ email });
+    const exists = await User.findOne({ email });
     if (exists) {
       return res.json({ success: false, message: "User already exists" })
     }
@@ -63,7 +63,7 @@ const registerUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt)
 
     //now creating the new user
-    const newUser = userModel({
+    const newUser = User({
       name,
       email,
       password: hashedPassword
@@ -109,9 +109,38 @@ const adminLogin = async (req, res) => {
 }
 
 
+const getCurrentUser = async (req, res) => {
+  try {
+      // Since the user is already added to `req.user` by the authUser middleware,
+      // we can directly access it here.
+      const user = req.user;
+
+      // If there's no user, this means authentication failed, but `authUser` should have already handled it.
+      if (!user) {
+          return res.status(404).json({ success: false, message: 'User not found' });
+      }
+
+      // Remove sensitive information like the password before sending the response
+      const { password, ...userData } = user.toObject();
+
+      // Send the user data (without password)
+      res.status(200).json({
+          success: true,
+          user: userData, // Send user details without password
+      });
+  } catch (err) {
+      console.error('Error retrieving current user:', err);
+      res.status(500).json({
+          success: false,
+          message: 'Server error while fetching user data',
+      });
+  }
+};
+
+
 
 
 export {
   loginUser,
-  registerUser, adminLogin
+  registerUser, adminLogin, getCurrentUser
 }
