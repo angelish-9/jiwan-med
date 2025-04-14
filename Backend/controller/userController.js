@@ -137,10 +137,44 @@ const getCurrentUser = async (req, res) => {
   }
 };
 
+// Update user role by admin
+const updateUserRoleByAdmin = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { role: newRole } = req.body;
+
+    // Validate input
+    if (!userId || !newRole) {
+      return res.status(400).json({ success: false, message: "userId and newRole are required" });
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    user.role = newRole;
+    await user.save();
+
+    res.json({ success: true, message: "User role updated successfully", user });
+  } catch (error) {
+    console.error("Error updating user role:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
 
 
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select('-password');
+    res.status(200).json({ users });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to fetch users' });
+  }
+};
 
 export {
   loginUser,
-  registerUser, adminLogin, getCurrentUser
+  registerUser, adminLogin, getCurrentUser, updateUserRoleByAdmin, getAllUsers
 }

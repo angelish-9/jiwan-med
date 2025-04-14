@@ -47,6 +47,16 @@ const Sidebar = () => {
           <HiOutlineReceiptRefund size={24} />
           <span className='hidden md:block'>Orders</span>
         </NavLink>
+
+        <NavLink
+          to='/admin/update-role'
+          className={({ isActive }) =>
+            `${linkClass} ${isActive ? activeClass : ''}`
+          }
+        >
+          <BiPlusCircle size={24} />
+          <span className='hidden md:block'>Update Users Role</span>
+        </NavLink>
       </div>
     </div>
   );

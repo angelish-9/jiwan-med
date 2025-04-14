@@ -14,8 +14,10 @@ import Wellness from './category/wellness.jsx';
 import DoctorPanel from './pages/DoctorPanel.jsx';
 import PharmacistPanel from './pages/PharmacistPanel.jsx';
 import AdminDashboard from './pages/admin/AdminDashboard.jsx';
-import FAQPage from "./pages/FAQpage.jsx";
 import Add from './pages/admin/Add.jsx';
+import UpdateRole from './pages/admin/UpdateRole.jsx';
+import FAQPage from "./pages/FAQpage.jsx";
+
 const CategoryProducts = lazy(() => import("./components/product/CategoryProducts.jsx"));
 const CartPage = lazy(() => import("./pages/CartPage.jsx"));
 import ChatComponent from "./components/ChatComponent.jsx";
@@ -24,7 +26,7 @@ import PharmacistDashboard from './components/PharmacistDashboard';
 import './App.css';
 
 function App() {
-  const [token, setToken] = useState(localStorage.getItem('token') || '');
+  const [token] = useState(localStorage.getItem('token') || '');
 
   useEffect(() => {
     localStorage.setItem('token', token);
@@ -57,6 +59,7 @@ function App() {
 
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/add" element={<Add token={token} />} />
+          <Route path="/admin/update-role" element={<UpdateRole token={token} />} />
 
           <Route path="product/category/:category" element={<CategoryProducts />} />
 
