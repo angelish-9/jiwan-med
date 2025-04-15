@@ -36,7 +36,7 @@ const __dirname = path.dirname(__filename);
 // CORS options
 const corsOptions = {
   origin: 'http://localhost:5173',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 };
