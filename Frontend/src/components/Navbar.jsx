@@ -43,7 +43,7 @@ const Navbar = () => {
         <div className="flex flex-wrap gap-6 items-center text-lg font-semibold text-black max-md:mt-4">
           <a href="/medicines" className="hover:underline">MEDICINES</a>
           <a href="/consult-pharmacists" className="hover:underline">CONSULT PHARMACISTS</a>
-          <a href="/doctor-appointment" className="hover:underline">DOCTOR APPOINTMENT</a>
+          <a href="/doctor" className="hover:underline">DOCTOR APPOINTMENT</a>
           <a href="/lab-tests" className="hover:underline">LAB TESTS</a>
           <a href="/offers" className="hover:underline">Offers</a>
           <a href="/help" className="hover:underline">Need Help?</a>

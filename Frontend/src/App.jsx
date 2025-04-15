@@ -20,6 +20,7 @@ const CategoryProducts = lazy(() => import("./components/product/CategoryProduct
 const CartPage = lazy(() => import("./pages/CartPage.jsx"));
 import ChatComponent from "./components/ChatComponent.jsx";
 import PharmacistDashboard from './components/PharmacistDashboard';
+import Doctor from './pages/doctor/Doctors.jsx';
 
 import './App.css';
 
@@ -31,7 +32,7 @@ function App() {
   }, [token]);
 
   // Define pharmacist details for chat functionality
-  const pharmacistId = '67fa35639fe7c1d32b2f8800'; 
+  const pharmacistId = '67f13a0db6f385b6a66e62a8'; 
   const pharmacistName = 'Dr. John Doe'; 
 
   return (
@@ -66,6 +67,7 @@ function App() {
           <Route path="/consult-pharmacists" element={<ChatComponent receiverId={pharmacistId} receiverName={pharmacistName} />} />
 
           <Route path="/pharmacist-dashboard" element={<PharmacistDashboard />} />  {/* Dashboard Page */}
+          <Route path="/doctor" element={<Doctor />} /> 
 
           {/* Optionally, a fallback route: */}
           {/* <Route path="*" element={<Navigate to="/home" />} /> */}
