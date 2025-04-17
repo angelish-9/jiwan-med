@@ -15,6 +15,7 @@ import DoctorPanel from './pages/DoctorPanel.jsx';
 import PharmacistPanel from './pages/PharmacistPanel.jsx';
 import AdminDashboard from './pages/admin/AdminDashboard.jsx';
 import Add from './pages/admin/Add.jsx';
+import EditProduct from "./pages/admin/EditProduct.jsx";
 import UpdateRole from './pages/admin/UpdateRole.jsx';
 import FAQPage from "./pages/FAQpage.jsx";
 
@@ -34,6 +35,7 @@ function App() {
   }, [token]);
 
   // Define pharmacist details for chat functionality
+  // const pharmacistId = '67fa35639fe7c1d32b2f8800'; 
   const pharmacistId = '67f13a0db6f385b6a66e62a8'; 
   const pharmacistName = 'Dr. John Doe'; 
 
@@ -60,6 +62,7 @@ function App() {
 
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/add" element={<Add token={token} />} />
+          <Route path="/admin/edit/:productId" element={<EditProduct />} />
           <Route path="/admin/update-role" element={<UpdateRole token={token} />} />
 
           <Route path="product/category/:category" element={<CategoryProducts />} />

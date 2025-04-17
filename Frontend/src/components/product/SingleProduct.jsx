@@ -1,29 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import AdminNavbar from './../../components/admin/Navbar';
+import AdminSidebar from './../../components/admin/Sidebar';
 
-const SingleProduct = () => {
-    const [product, setProduct] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [quantity, setQuantity] = useState(1);
-
+const EditProduct = () => {
     const { productId } = useParams();
     const navigate = useNavigate();
 
+    const [product, setProduct] = useState(null);
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [price, setPrice] = useState('');
+    const [bestseller, setBestseller] = useState(false);
+    const [imageFile, setImageFile] = useState(null);
+
     const fetchProduct = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/api/products/single/${productId}`);
-            if (response.data.success) {
-                setProduct(response.data.product);
-            } else {
-                setError('Product not found');
+            const res = await axios.get(`http://localhost:5000/api/products/single/${productId}`);
+            if (res.data.success) {
+                const data = res.data.product;
+                setProduct(data);
+                setName(data.name);
+                setDescription(data.description);
+                setPrice(data.price);
+                setBestseller(data.bestseller || false);
             }
         } catch (err) {
-            setError('Error fetching product data');
-            console.error(err);
-        } finally {
-            setLoading(false);
+            console.error('Error fetching product:', err);
+            alert('Error fetching product details');
         }
     };
 
@@ -31,149 +36,131 @@ const SingleProduct = () => {
         fetchProduct();
     }, [productId]);
 
-    const handleQuantityChange = (e) => {
-        setQuantity(e.target.value);
-    };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    const handleAddToCart = async () => {
-        try {
-            const cartData = {
-                productId: product._id,
-                quantity,
-            };
-
-            const response = await axios.post('http://localhost:5000/api/cart/add', cartData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
-                },
-            });
-
-            if (response.data.success) {
-                alert('Product added to cart');
-            } else {
-                alert('Error adding product to cart');
-            }
-        } catch (err) {
-            console.error(err);
-            alert('Error adding product to cart');
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('description', description);
+        formData.append('price', price);
+        formData.append('bestseller', bestseller);
+        if (imageFile) {
+            formData.append('image', imageFile);
         }
-    };
 
-    const handleRemoveProduct = async () => {
         try {
-            const response = await axios.post(
-                'http://localhost:5000/api/products/remove',
-                { id: productId },
+            const response = await axios.put(
+                `http://localhost:5000/api/products/admin/update/${productId}`,
+                formData,
                 {
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'multipart/form-data',
                         Authorization: `Bearer ${localStorage.getItem('token')}`,
                     },
                 }
             );
 
             if (response.data.success) {
-                alert('Product removed successfully');
-                navigate('/product-list');
+                alert('Product updated successfully!');
+                navigate('/list-product');
             } else {
-                alert('Error removing product');
+                alert('Failed to update product');
             }
         } catch (err) {
-            console.error(err);
-            alert('Error removing product');
+            console.error('Error updating product:', err);
+            alert('Error updating product');
         }
     };
 
-    if (loading) {
-        return <div className="text-center text-xl font-semibold text-gray-700">Loading...</div>;
-    }
-
-    if (error) {
-        return <div className="text-center text-xl font-semibold text-red-500">{error}</div>;
-    }
-
-    if (!product) {
-        return <div className="text-center text-xl font-semibold text-gray-700">No product found.</div>;
-    }
-
-    const userRole = localStorage.getItem('role');
-    const isAdmin = userRole === 'admin';
-
     return (
-        <div className="mt-8">
-            {isAdmin && (
-                <div className="text-right mb-6">
-                    <Link
-                        to={`/product/edit/${productId}`}
-                        className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-all transform hover:scale-105"
-                    >
-                        Edit Product
-                    </Link>
-                    <button
-                        onClick={handleRemoveProduct}
-                        className="ml-4 bg-red-600 text-white px-8 py-3 rounded-lg hover:bg-red-700 transition-all transform hover:scale-105"
-                    >
-                        Remove Product
-                    </button>
-                </div>
-            )}
-
-            <div className="flex flex-col md:flex-row justify-between items-center bg-white p-8 rounded-xl shadow-md">
-                <div className="md:w-2/3">
-                    <h3 className="text-4xl font-extrabold text-gray-800">{product.name}</h3>
-                    <p className="text-lg text-gray-600 mt-4">{product.description}</p>
-                    <p className="text-xl font-bold text-green-700 mt-6">
-                        <strong>Price:</strong> ${product.price}
-                    </p>
-
-                    {product.bestseller && (
-                        <span className="mt-2 inline-block bg-green-500 text-white text-xs font-semibold px-4 py-1 rounded-full">
-                            Bestseller
-                        </span>
-                    )}
-
-                    {/* Quantity Selection */}
-                    <div className="mt-4">
-                        <label className="block text-lg font-semibold text-gray-700">Quantity:</label>
-                        <input
-                            type="number"
-                            value={quantity}
-                            onChange={handleQuantityChange}
-                            min="1"
-                            className="mt-2 p-2 w-20 border rounded-lg"
-                        />
-                    </div>
-
-                    {/* Add to Cart Button */}
-                    <button
-                        onClick={handleAddToCart}
-                        className="mt-6 bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 transition-all transform hover:scale-105"
-                    >
-                        Add to Cart
-                    </button>
-                </div>
-
-                <div className="mt-8 md:mt-0">
-                    {product.image && product.image.length > 0 && (
-                        <div>
-                            <h4 className="text-lg font-semibold text-gray-700 mb-4">Product Images</h4>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {product.image.map((img, index) => (
-                                    <img
-                                        key={index}
-                                        src={`http://localhost:5000${img}`}
-                                        alt={`Product Image ${index + 1}`}
-                                        className="w-full h-full object-cover rounded-lg shadow-lg hover:scale-105 transition-all"
-                                    />
-                                ))}
-                            </div>
+        <>
+            <AdminNavbar />
+            <div className="flex min-h-screen bg-gray-100">
+                <AdminSidebar />
+                <div className="flex-1 p-8">
+                    <h2 className="text-2xl font-bold mb-6">Edit Product</h2>
+                    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md w-full max-w-2xl">
+                        <div className="mb-4">
+                            <label className="block font-semibold mb-1">Product Name</label>
+                            <input
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                required
+                                className="w-full border p-2 rounded"
+                            />
                         </div>
-                    )}
+
+                        <div className="mb-4">
+                            <label className="block font-semibold mb-1">Description</label>
+                            <textarea
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                required
+                                className="w-full border p-2 rounded"
+                            ></textarea>
+                        </div>
+
+                        <div className="mb-4">
+                            <label className="block font-semibold mb-1">Price</label>
+                            <input
+                                type="number"
+                                value={price}
+                                onChange={(e) => setPrice(e.target.value)}
+                                required
+                                className="w-full border p-2 rounded"
+                            />
+                        </div>
+
+                        <div className="mb-4">
+                            <label className="inline-flex items-center">
+                                <input
+                                    type="checkbox"
+                                    checked={bestseller}
+                                    onChange={(e) => setBestseller(e.target.checked)}
+                                    className="mr-2"
+                                />
+                                Bestseller
+                            </label>
+                        </div>
+
+                        <div className="mb-4">
+                            <label className="block font-semibold mb-1">Update Image</label>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => setImageFile(e.target.files[0])}
+                                className="w-full"
+                            />
+                        </div>
+
+                        {product?.image && product.image.length > 0 && (
+                            <div className="mb-4">
+                                <label className="block font-semibold mb-1">Current Images:</label>
+                                <div className="grid grid-cols-2 gap-4 mt-2">
+                                    {product.image.map((img, index) => (
+                                        <img
+                                            key={index}
+                                            src={`http://localhost:5000${img}`}
+                                            alt={`Product ${index + 1}`}
+                                            className="w-full h-32 object-cover rounded"
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        <button
+                            type="submit"
+                            className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition"
+                        >
+                            Update Product
+                        </button>
+                    </form>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 
-export default SingleProduct;
+export default EditProduct;

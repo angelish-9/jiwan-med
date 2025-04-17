@@ -74,6 +74,68 @@ const removeProduct = async (req, res) => {
     }
 
 }
+const editProduct = async (req, res) => {
+    try {
+        const { name, description, price, bestseller } = req.body;
+        const { id } = req.params;
+
+        const existingProduct = await Product.findById(id);
+
+        if (!existingProduct) {
+            return res.status(404).json({ success: false, message: 'Product not found.' });
+        }
+
+        let imageUrl = existingProduct.image;
+
+        // If new image is uploaded
+        if (req.file) {
+            const imageDirectory = path.join(process.cwd(), 'uploads', 'product-images');
+
+            // Create the directory if it doesn't exist
+            if (!fs.existsSync(imageDirectory)) {
+                fs.mkdirSync(imageDirectory, { recursive: true });
+            }
+
+            const imageName = `${Date.now()}-${req.file.originalname}`;
+            const imagePath = path.join(imageDirectory, imageName);
+
+            // Move new file from temp to target directory
+            fs.copyFileSync(req.file.path, imagePath);
+
+            // Remove temp file
+            fs.unlinkSync(req.file.path);
+
+            // Delete existing image(s) if any
+            if (Array.isArray(imageUrl)) {
+                imageUrl.forEach((imgPath) => {
+                    const fullOldImagePath = path.join(process.cwd(), imgPath);
+                    if (fs.existsSync(fullOldImagePath)) {
+                        fs.unlinkSync(fullOldImagePath);
+                    }
+                });
+            }
+
+            // Set new image path as array
+            imageUrl = [`/uploads/product-images/${imageName}`];
+        }
+
+        // Update product fields
+        existingProduct.name = name;
+        existingProduct.description = description;
+        existingProduct.price = Number(price);
+        existingProduct.bestseller = bestseller === "true" || bestseller === true;
+        existingProduct.image = imageUrl;
+
+        await existingProduct.save();
+
+        res.json({ success: true, message: 'Product updated successfully.' });
+
+    } catch (error) {
+        console.error('Edit product error:', error);
+        res.status(500).json({ success: false, message: 'Server error: ' + error.message });
+    }
+};
+
 const singleProduct = async (req, res) => {
     try {
         const { productId } = req.params;
@@ -118,4 +180,4 @@ const categoryProduct = async (req, res) => {
     }
 }
 
-export { addProduct, removeProduct, listProduct, singleProduct, categoryProduct }
+export { addProduct, removeProduct, editProduct, listProduct, singleProduct, categoryProduct }
