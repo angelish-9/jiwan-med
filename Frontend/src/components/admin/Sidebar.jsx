@@ -39,7 +39,7 @@ const Sidebar = () => {
         </NavLink>
 
         <NavLink
-          to='/Orders'
+          to='/admin/orders'
           className={({ isActive }) =>
             `${linkClass} ${isActive ? activeClass : ''}`
           }

@@ -59,6 +59,9 @@ const Navbar = () => {
               <Link to="/cart" className="hover:text-pink-600">Cart</Link>
               <span>|</span>
 
+              <Link to="/myorders" className="hover:text-pink-600">My Orders</Link>
+              <span>|</span>
+
               <Link to="/profile" className="hover:underline">Profile</Link>
               <span>|</span>
               <button onClick={handleLogout} className="hover:underline text-red-600">Logout</button>

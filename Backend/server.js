@@ -14,6 +14,7 @@ import authRoutes from './routes/authRoutes.js';
 import productRouter from './routes/productRoute.js';
 import cartRouter from './routes/cartRoute.js';
 import chatRoutes from './routes/chatRoutes.js'; // <-- Add this route
+import orderRouter from './routes/orderRoute.js'; // <-- Add this route
 
 // Import Message model
 import Message from './models/Message.js';
@@ -54,7 +55,8 @@ app.use('/api/user', userRouter);
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRouter);
 app.use('/api/cart', cartRouter);
-app.use('/api/chat', chatRoutes); // <-- Chat route
+app.use('/api/chat', chatRoutes); 
+app.use('/api/order', orderRouter);
 
 // Socket.IO logic
 io.on('connection', (socket) => {
