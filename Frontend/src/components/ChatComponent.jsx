@@ -19,8 +19,8 @@ const ChatComponent = () => {
   const userId = user[0];
   const userName = user[1];
   const userRole = user[3];
-  const pharmacistId = '67f13a0db6f385b6a66e62a8';
-  // const pharmacistId = '67fa35639fe7c1d32b2f8800';
+  // const pharmacistId = '67f13a0db6f385b6a66e62a8';
+  const pharmacistId = '67fa35639fe7c1d32b2f8800';
 
   const sanitizeMessage = (message) => {
     const element = document.createElement('div');

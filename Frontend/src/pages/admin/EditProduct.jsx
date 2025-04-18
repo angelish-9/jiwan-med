@@ -1,153 +1,166 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import AdminSidebar from './../../components/admin/Sidebar';
 import AdminNavbar from './../../components/admin/Navbar';
+import AdminSidebar from './../../components/admin/Sidebar';
 
 const EditProduct = () => {
     const { productId } = useParams();
     const navigate = useNavigate();
+
     const [product, setProduct] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [form, setForm] = useState({
-        name: '',
-        description: '',
-        price: '',
-        bestseller: false,
-    });
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [price, setPrice] = useState('');
+    const [bestseller, setBestseller] = useState(false);
+    const [imageFile, setImageFile] = useState(null);
 
-    useEffect(() => {
-        const fetchProduct = async () => {
-            try {
-                const response = await axios.get(`http://localhost:5000/api/products/single/${productId}`);
-                if (response.data.success) {
-                    setProduct(response.data.product);
-                    setForm({
-                        name: response.data.product.name,
-                        description: response.data.product.description,
-                        price: response.data.product.price,
-                        bestseller: response.data.product.bestseller,
-                    });
-                } else {
-                    setError('Product not found');
-                }
-            } catch (err) {
-                setError('Failed to fetch product');
-                console.error(err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchProduct();
-    }, [productId]);
-
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setForm({
-            ...form,
-            [name]: type === 'checkbox' ? checked : value,
-        });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const fetchProduct = async () => {
         try {
-            const response = await axios.put(`http://localhost:5000/api/products/admin/update/${productId}`, form, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
-                },
-            });
-
-            if (response.data.success) {
-                alert('Product updated successfully!');
-                navigate(`/product/${productId}`);
-            } else {
-                alert('Update failed');
+            const res = await axios.get(`http://localhost:5000/api/products/single/${productId}`);
+            if (res.data.success) {
+                const data = res.data.product;
+                setProduct(data);
+                setName(data.name);
+                setDescription(data.description);
+                setPrice(data.price);
+                setBestseller(data.bestseller || false);
             }
         } catch (err) {
-            console.error(err);
-            alert('Something went wrong while updating.');
+            console.error('Error fetching product:', err);
+            alert('Error fetching product details');
         }
     };
 
-    if (loading) return <div className="text-center mt-10 text-lg">Loading...</div>;
-    if (error) return <div className="text-center mt-10 text-red-600">{error}</div>;
+    useEffect(() => {
+        fetchProduct();
+    }, [productId]);
 
-    const userRole = localStorage.getItem('role');
-    if (userRole !== 'admin') {
-        return <div className="text-center text-red-600 mt-10">Unauthorized Access</div>;
-    }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('description', description);
+        formData.append('price', price);
+        formData.append('bestseller', bestseller);
+        if (imageFile) {
+            formData.append('image', imageFile);
+        }
+
+        try {
+            const response = await axios.put(
+                `http://localhost:5000/api/products/admin/update/${productId}`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                }
+            );
+
+            if (response.data.success) {
+                alert('Product updated successfully!');
+                navigate('/list-product');
+            } else {
+                alert('Failed to update product');
+            }
+        } catch (err) {
+            console.error('Error updating product:', err);
+            alert('Error updating product');
+        }
+    };
 
     return (
         <>
             <AdminNavbar />
-            <div className="flex min-h-screen">
+            <div className="flex min-h-screen bg-gray-100">
                 <AdminSidebar />
-                <div className="flex-1 p-10 bg-gray-100">
-                    <h1 className="text-3xl font-bold mb-6 text-gray-700">Edit Product</h1>
-                    <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-xl shadow-md max-w-2xl">
-                        <div>
-                            <label className="block text-gray-700 font-semibold">Name</label>
+                <div className="flex-1 p-8">
+                    <h2 className="text-2xl font-bold mb-6">Edit Product</h2>
+                    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md w-full max-w-2xl">
+                        <div className="mb-4">
+                            <label className="block font-semibold mb-1">Product Name</label>
                             <input
                                 type="text"
-                                name="name"
-                                value={form.name}
-                                onChange={handleChange}
-                                className="w-full mt-2 p-3 border rounded-lg"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
                                 required
+                                className="w-full border p-2 rounded"
                             />
                         </div>
 
-                        <div>
-                            <label className="block text-gray-700 font-semibold">Description</label>
+                        <div className="mb-4">
+                            <label className="block font-semibold mb-1">Description</label>
                             <textarea
-                                name="description"
-                                value={form.description}
-                                onChange={handleChange}
-                                className="w-full mt-2 p-3 border rounded-lg"
-                                rows="4"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
                                 required
+                                className="w-full border p-2 rounded"
+                            ></textarea>
+                        </div>
+
+                        <div className="mb-4">
+                            <label className="block font-semibold mb-1">Price</label>
+                            <input
+                                type="number"
+                                value={price}
+                                onChange={(e) => setPrice(e.target.value)}
+                                required
+                                className="w-full border p-2 rounded"
                             />
                         </div>
 
-        <div>
-            <label className="block text-gray-700 font-semibold">Price ($)</label>
-            <input
-                type="number"
-                name="price"
-                value={form.price}
-                onChange={handleChange}
-                className="w-full mt-2 p-3 border rounded-lg"
-                required
-                step="0.01"
-            />
-        </div>
+                        <div className="mb-4">
+                            <label className="inline-flex items-center">
+                                <input
+                                    type="checkbox"
+                                    checked={bestseller}
+                                    onChange={(e) => setBestseller(e.target.checked)}
+                                    className="mr-2"
+                                />
+                                Bestseller
+                            </label>
+                        </div>
 
-        <div className="flex items-center">
-            <input
-                type="checkbox"
-                name="bestseller"
-                checked={form.bestseller}
-                onChange={handleChange}
-                className="mr-2"
-            />
-            <label className="text-gray-700 font-semibold">Mark as Bestseller</label>
-        </div>
+                        <div className="mb-4">
+                            <label className="block font-semibold mb-1">Update Image</label>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => setImageFile(e.target.files[0])}
+                                className="w-full"
+                            />
+                        </div>
 
-        <button
-            type="submit"
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all"
-        >
-            Update Product
-        </button>
-    </form>
-</div>
-</div>
-</>
-);
+                        {product?.image && product.image.length > 0 && (
+                            <div className="mb-4">
+                                <label className="block font-semibold mb-1">Current Images:</label>
+                                <div className="grid grid-cols-2 gap-4 mt-2">
+                                    {product.image.map((img, index) => (
+                                        <img
+                                            key={index}
+                                            src={`http://localhost:5000${img}`}
+                                            alt={`Product ${index + 1}`}
+                                            className="w-full h-32 object-cover rounded"
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        <button
+                            type="submit"
+                            className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition"
+                        >
+                            Update Product
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </>
+    );
 };
 
 export default EditProduct;

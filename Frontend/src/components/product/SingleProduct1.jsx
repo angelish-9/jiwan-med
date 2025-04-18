@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import UserNavbar from './../Navbar';
-import AdminNavbar from './../../components/admin/Navbar';
-
 
 const SingleProduct = () => {
     const [product, setProduct] = useState(null);
@@ -104,13 +101,11 @@ const SingleProduct = () => {
     const isAdmin = userRole === 'admin';
 
     return (
-        <>
-            {isAdmin ? <AdminNavbar /> : <UserNavbar />}
-
+        <div className="mt-8">
             {isAdmin && (
                 <div className="text-right mb-6">
                     <Link
-                        to={`/admin/edit/${productId}`}
+                        to={`/product/edit/${productId}`}
                         className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-all transform hover:scale-105"
                     >
                         Edit Product
@@ -177,7 +172,7 @@ const SingleProduct = () => {
                     )}
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

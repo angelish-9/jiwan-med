@@ -35,8 +35,8 @@ function App() {
   }, [token]);
 
   // Define pharmacist details for chat functionality
-  // const pharmacistId = '67fa35639fe7c1d32b2f8800'; 
-  const pharmacistId = '67f13a0db6f385b6a66e62a8'; 
+  const pharmacistId = '67fa35639fe7c1d32b2f8800'; 
+  // const pharmacistId = '67f13a0db6f385b6a66e62a8'; 
   const pharmacistName = 'Dr. John Doe'; 
 
   return (
