@@ -1,5 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCartShopping, faUser, faBox, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -14,6 +17,9 @@ const Navbar = () => {
     "First_Aid",
     "Chronic_Care",
     "Personal_Care",
+    "Sexual Wellness",
+    "Mother_and_Baby",
+    "Health_Devices",
   ];
 
   const handleLogout = () => {
@@ -36,7 +42,7 @@ const Navbar = () => {
         {/* Left: Logo & Title */}
         <div className="flex items-center gap-3">
           <img src={logo} alt="Logo" className="w-10 h-10 object-contain" />
-          <h1 className="text-2xl font-bold text-black">Jiwan Medico</h1>
+          <h1 className="text-xl font-bold text-black"><a href="/">Jiwan Medico</a></h1>
         </div>
 
         {/* Center: Main Nav Links */}
@@ -44,54 +50,56 @@ const Navbar = () => {
           <a href="/medicines" className="hover:underline">MEDICINES</a>
           <a href="/consult-pharmacists" className="hover:underline">CONSULT PHARMACISTS</a>
           <a href="/doctor" className="hover:underline">DOCTOR APPOINTMENT</a>
-          <a href="/lab-tests" className="hover:underline">LAB TESTS</a>
-          <a href="/offers" className="hover:underline">Offers</a>
-          <a href="/help" className="hover:underline">Need Help?</a>
+
+          <a href="/faq" className="hover:underline">Need Help?</a>
           {userRole === "admin" && (
             <a href="/admin" className="text-indigo-600 hover:underline">Admin Dashboard</a>
           )}
         </div>
 
         {/* Right: Auth/Profile */}
-        <div className="flex gap-2.5 text-lg font-semibold text-black max-md:mt-4">
-          {token && userRole ? (
-            <>
-              <Link to="/cart" className="hover:text-pink-600">Cart</Link>
-              <span>|</span>
+        <div className="flex gap-4 items-center text-lg font-semibold text-black relative max-md:mt-4">
 
-              <Link to="/myorders" className="hover:text-pink-600">My Orders</Link>
-              <span>|</span>
+{token && userRole ? (
+  <>
+    <Link to="/cart" className="hover:text-pink-600" title="Cart">
+      <FontAwesomeIcon icon={faCartShopping} />
+    </Link>
 
-              <Link to="/profile" className="hover:underline">Profile</Link>
-              <span>|</span>
-              <button onClick={handleLogout} className="hover:underline text-red-600">Logout</button>
-            </>
-          ) : (
-            <>
-              <a href="/signin" className="hover:underline">Login</a>
-              <span>|</span>
-              <a href="/signup" className="hover:underline">Sign Up</a>
-            </>
-          )}
-        </div>
-      </nav>
+    <Link to="/myorders" className="hover:text-pink-600" title="My Orders">
+      <FontAwesomeIcon icon={faBox} />
+    </Link>
 
-      {/* Sub Navigation */}
-      <div className="flex flex-wrap gap-5 justify-between items-center mt-3 px-6 max-md:flex-col max-md:items-start">
-        <nav className="flex gap-8 text-lg font-semibold text-black">
-          <a href="/location" className="hover:underline">Damak, Jhapa</a>
-          <a href="/" className="hover:underline">HOME</a>
-          <a href="#about" className="hover:underline">ABOUT US</a>
-          <a href="/faq" className="hover:underline">FAQ</a>
-          <a href="#contact" className="hover:underline">CONTACT US</a>
-        </nav>
-        <button className="px-4 py-2 text-lg text-white bg-red-500 rounded-3xl hover:bg-red-600 border border-black">
-          Emergency Delivery
+    {/* Profile Hover Menu */}
+    <div className="relative group">
+      <FontAwesomeIcon icon={faUser} className="cursor-pointer group-hover:text-pink-600" />
+
+      <div className="absolute hidden group-hover:flex flex-col bg-white border shadow-lg rounded py-2 px-4 top-7 right-0 z-20 min-w-[120px] text-sm">
+        <Link to="/profile" className="hover:text-pink-600 mb-1">View Profile</Link>
+        <button onClick={handleLogout} className="text-red-600 hover:underline text-left">
+          <FontAwesomeIcon icon={faRightFromBracket} className="mr-2" />
+          Logout
         </button>
       </div>
+    </div>
+  </>
+) : (
+  <div className="relative group">
+    <FontAwesomeIcon icon={faUser} className="cursor-pointer group-hover:text-pink-600" />
+
+    <div className="absolute hidden group-hover:flex flex-col bg-white border shadow-lg rounded py-2 px-4 top-8 right-0 z-20 min-w-[120px] text-sm">
+      <Link to="/signin" className="hover:text-pink-600 mb-1">Sign In</Link>
+      <Link to="/signup" className="hover:text-pink-600">Sign Up</Link>
+    </div>
+  </div>
+)}
+</div>
+
+      </nav>
+
 
       {/* Category Navigation */}
-      <div className="container mx-auto flex justify-center space-x-6 py-2">
+      <div className="container mx-auto flex justify-center space-x-6 py-4 text-base text-black bg-gray-100">
         {categories.map((cat) => (
           <Link
             key={cat.toLowerCase()}

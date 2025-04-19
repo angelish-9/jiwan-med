@@ -18,7 +18,7 @@ const Home = () => {
       <Navbar />
       </nav>
       {/* Hero Section Below Navbar */}
-      <div className="mt-48">
+      <div className="mt-28">
         <HeroSection />
       </div>
       <div className='-mt-16'>

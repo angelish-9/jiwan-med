@@ -109,8 +109,10 @@ const CartPage = () => {
     return (
 
         <>
-            <UserNavbar />
-            <div className="p-6 max-w-3xl mx-auto">
+<nav className="fixed top-0 left-0 w-full z-50 bg-white shadow">
+        {/* Navigation content here */}
+      <UserNavbar />
+      </nav>            <div className="p-6 max-w-3xl mt-28 mx-auto">
                 <h2 className="text-2xl font-bold mb-4">Your Cart</h2>
 
                 {cartItems.length === 0 ? (

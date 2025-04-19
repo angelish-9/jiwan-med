@@ -19,7 +19,7 @@ const Profile = () => {
                 setUser(response.data.user);
                 setLoading(false);
             })
-            .catch((err) => {
+            .catch((error) => {
                 setError('Failed to fetch user data.');
                 setLoading(false);
             });
@@ -51,8 +51,11 @@ const Profile = () => {
 
     return (
         <>
-        <UserNavbar />
-        <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+            <nav className="fixed top-0 left-0 w-full z-50 bg-white shadow">
+                  {/* Navigation content here */}
+                <UserNavbar />
+           </nav>      
+             <div className="max-w-3xl mt-28 mx-auto p-6 bg-white shadow-lg rounded-lg">
             <h2 className="text-3xl font-bold text-center mb-4">Your Profile</h2>
             <div className="mb-4">
                 <p className="font-semibold text-lg">Name:</p>
