@@ -16,7 +16,7 @@ import cartRouter from './routes/cartRoute.js';
 import chatRoutes from './routes/chatRoutes.js'; // <-- Add this route
 import orderRouter from './routes/orderRoute.js'; // <-- Add this route
 import promocodeRouter from './routes/promocodeRoute.js';
-
+import appointmentRouter from './routes/appointmentRoute.js';
 
 // Import Message model
 import Message from './models/Message.js';
@@ -60,6 +60,7 @@ app.use('/api/cart', cartRouter);
 app.use('/api/chat', chatRoutes); 
 app.use('/api/order', orderRouter);
 app.use('/api/promocode', promocodeRouter);
+app.use("/api/appointments", appointmentRouter);
 
 // Socket.IO logic
 io.on('connection', (socket) => {
