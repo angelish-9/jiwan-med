@@ -27,6 +27,8 @@ import ChatComponent from "./components/ChatComponent.jsx";
 import PharmacistDashboard from './components/PharmacistDashboard';
 import Doctor from './pages/doctor/Doctors.jsx';
 
+const AdminPromoCodes = lazy(() => import("./pages/admin/AdminPromoCodes.jsx"));
+
 import './App.css';
 
 function App() {
@@ -38,8 +40,8 @@ function App() {
 
   // Define pharmacist details for chat functionality
   // const pharmacistId = '67fa35639fe7c1d32b2f8800'; 
-  const pharmacistId = '67f13a0db6f385b6a66e62a8'; 
-  const pharmacistName = 'Dr. John Doe'; 
+  const pharmacistId = '67f13a0db6f385b6a66e62a8';
+  const pharmacistName = 'Dr. John Doe';
 
   return (
     <div className="min-h-screen">
@@ -72,12 +74,14 @@ function App() {
           <Route path="/order-success" element={<SuccessPage />} />
           <Route path="/myorders" element={<MyOrdersPage />} />
           <Route path="/admin/orders" element={<AdminOrdersPage />} />
-          
+
+          <Route path="/admin/promocodes" element={<AdminPromoCodes />} />
+
           {/* Add the ChatComponent route */}
           <Route path="/consult-pharmacists" element={<ChatComponent receiverId={pharmacistId} receiverName={pharmacistName} />} />
 
           <Route path="/pharmacist-dashboard" element={<PharmacistDashboard />} />  {/* Dashboard Page */}
-          <Route path="/doctor" element={<Doctor />} /> 
+          <Route path="/doctor" element={<Doctor />} />
 
           {/* Optionally, a fallback route: */}
           {/* <Route path="*" element={<Navigate to="/home" />} /> */}
