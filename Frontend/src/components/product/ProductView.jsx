@@ -12,6 +12,7 @@ const ProductView = ({ product }) => {
   } = product;
 
   return (
+    
     <section className="container mx-auto px-4 py-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
         {/* Product Image */}

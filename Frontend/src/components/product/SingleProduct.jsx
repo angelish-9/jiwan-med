@@ -4,7 +4,6 @@ import axios from 'axios';
 import UserNavbar from './../Navbar';
 import AdminNavbar from './../../components/admin/Navbar';
 
-
 const SingleProduct = () => {
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -105,10 +104,14 @@ const SingleProduct = () => {
 
     return (
         <>
-            {isAdmin ? <AdminNavbar /> : <UserNavbar />}
+            <nav className="fixed top-0 left-0 w-full z-50 bg-white shadow">
+  {isAdmin ? <AdminNavbar /> : <UserNavbar />}
+</nav>
+<div className="mt-20" /> {/* to offset the fixed navbar height */}
+
 
             {isAdmin && (
-                <div className="text-right mb-6">
+                <div className="text-right mb-6 container mx-auto px-4">
                     <Link
                         to={`/admin/edit/${productId}`}
                         className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-all transform hover:scale-105"
@@ -124,59 +127,62 @@ const SingleProduct = () => {
                 </div>
             )}
 
-            <div className="flex flex-col md:flex-row justify-between items-center bg-white p-8 rounded-xl shadow-md">
-                <div className="md:w-2/3">
-                    <h3 className="text-4xl font-extrabold text-gray-800">{product.name}</h3>
-                    <p className="text-lg text-gray-600 mt-4">{product.description}</p>
-                    <p className="text-xl font-bold text-green-700 mt-6">
-                        <strong>Price:</strong> ${product.price}
-                    </p>
-
-                    {product.bestseller && (
-                        <span className="mt-2 inline-block bg-green-500 text-white text-xs font-semibold px-4 py-1 rounded-full">
-                            Bestseller
-                        </span>
-                    )}
-
-                    {/* Quantity Selection */}
-                    <div className="mt-4">
-                        <label className="block text-lg font-semibold text-gray-700">Quantity:</label>
-                        <input
-                            type="number"
-                            value={quantity}
-                            onChange={handleQuantityChange}
-                            min="1"
-                            className="mt-2 p-2 w-20 border rounded-lg"
-                        />
+            <section className="container mx-auto px-4 py-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center bg-white shadow-xl rounded-xl p-6">
+                    {/* Product Image */}
+                    <div className="flex justify-center">
+                        {product.image && product.image.length > 0 && (
+                            <img
+                                src={`http://localhost:5000${product.image[0]}`}
+                                alt={product.name}
+                                className="w-full max-w-xs h-auto object-cover border-4 border-blue-500 rounded-lg"
+                            />
+                        )}
                     </div>
 
-                    {/* Add to Cart Button */}
-                    <button
-                        onClick={handleAddToCart}
-                        className="mt-6 bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 transition-all transform hover:scale-105"
-                    >
-                        Add to Cart
-                    </button>
-                </div>
-
-                <div className="mt-8 md:mt-0">
-                    {product.image && product.image.length > 0 && (
+                    {/* Product Info */}
+                    <div className="text-center md:text-left flex flex-col justify-between h-full">
                         <div>
-                            <h4 className="text-lg font-semibold text-gray-700 mb-4">Product Images</h4>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {product.image.map((img, index) => (
-                                    <img
-                                        key={index}
-                                        src={`http://localhost:5000${img}`}
-                                        alt={`Product Image ${index + 1}`}
-                                        className="w-full h-full object-cover rounded-lg shadow-lg hover:scale-105 transition-all"
-                                    />
-                                ))}
+                            <h2 className="text-3xl font-bold text-gray-900 mb-2">{product.name}</h2>
+
+                            {product.bestseller && (
+                                <span className="inline-block bg-green-500 text-white text-xs font-semibold px-4 py-1 rounded-full mb-3">
+                                    Bestseller
+                                </span>
+                            )}
+
+                            <p className="text-base text-gray-700 mb-6 leading-relaxed">
+                                {product.description || "No description available."}
+                            </p>
+
+                            <div className="flex justify-center md:justify-start items-center gap-3 mb-6">
+                                <span className="text-xl font-bold text-gray-800">Rs.</span>
+                                <span className="text-3xl font-extrabold text-black">{product.price.toFixed(2)}</span>
                             </div>
+
+                            {/* Quantity Selector */}
+                            <div className="mt-4 mb-6">
+                                <label className="block text-lg font-semibold text-gray-700 mb-2">Quantity:</label>
+                                <input
+                                    type="number"
+                                    value={quantity}
+                                    onChange={handleQuantityChange}
+                                    min="1"
+                                    className="p-2 w-24 text-center border border-gray-300 rounded-lg shadow-sm"
+                                />
+                            </div>
+
+                            {/* Buy Now Button */}
+                            <button
+                                onClick={handleAddToCart}
+                                className="w-full bg-red-500 text-white text-lg py-3 px-8 rounded-full hover:bg-red-600 transition-all"
+                            >
+                                Add to Cart
+                            </button>
                         </div>
-                    )}
+                    </div>
                 </div>
-            </div>
+            </section>
         </>
     );
 };

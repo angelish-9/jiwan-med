@@ -19,8 +19,11 @@ const MyOrdersPage = () => {
 
     return (
         <>
-            <UserNavbar />
-            <div className="max-w-7xl mx-auto p-6">
+            <nav className="fixed top-0 left-0 w-full z-50 bg-white shadow">
+                  {/* Navigation content here */}
+                <UserNavbar />
+           </nav>  
+                     <div className="max-w-7xl mt-28 mx-auto p-6">
                 <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">My Orders</h2>
 
                 {orders.length === 0 ? (

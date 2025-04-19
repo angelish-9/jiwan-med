@@ -148,7 +148,10 @@ const ChatComponent = () => {
   if (userRole === 'pharmacist') {
     return (
       <>
-        <Navbar />
+       <nav className="fixed top-0 left-0 w-full z-50 bg-white shadow">
+        {/* Navigation content here */}
+      <Navbar />
+      </nav>
         <div className="flex gap-4">
           <div className="w-1/3 border p-3">
             <h2 className="font-semibold mb-2">Senders</h2>
@@ -213,8 +216,11 @@ const ChatComponent = () => {
   // === NON-PHARMACIST UI ===
   return (
     <>
+      <nav className="fixed top-0 left-0 w-full z-50 bg-white shadow">
+        {/* Navigation content here */}
       <Navbar />
-      <div className="p-4 border rounded w-full max-w-md mx-auto">
+      </nav>
+      <div className="p-4 border rounded w-full max-w-md mx-auto mt-32">
         <h2 className="text-lg font-semibold mb-2">Message with Pharmacist</h2>
         <div className="h-48 overflow-y-auto border p-2 mb-2 bg-gray-50">
           {messages.map((msg, i) => (

@@ -11,8 +11,6 @@ import ProductList from './components/product/ProductList.jsx';
 import SingleProduct from './components/product/SingleProduct.jsx';
 import Vitamins from './category/vitamins.jsx';
 import Wellness from './category/wellness.jsx';
-import DoctorPanel from './pages/DoctorPanel.jsx';
-import PharmacistPanel from './pages/PharmacistPanel.jsx';
 import AdminDashboard from './pages/admin/AdminDashboard.jsx';
 import Add from './pages/admin/Add.jsx';
 import EditProduct from "./pages/admin/EditProduct.jsx";
@@ -52,8 +50,6 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/doctor-panel" element={<DoctorPanel />} />
-          <Route path="/pharmacist-panel" element={<PharmacistPanel />} />
           <Route path="/faq" element={<FAQPage />} />
 
           <Route path="/category/pain" element={<Pain />} />

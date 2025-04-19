@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import FaqBanner from '../components/FAQ/FaqBanner';
 import Sidebar from '../components/FAQ/Sidebar';
+import Navbar from '../components/Navbar';
 
 const FAQs = {
   'All Category': [
@@ -42,8 +43,13 @@ const FAQpage = () => {
 
   return (
     <div>
-      <FaqBanner />
-
+      <nav className="fixed top-0 left-0 w-full z-50 bg-white shadow">
+        {/* Navigation content here */}
+      <Navbar />
+      </nav>
+      <div className='bg-gray-100 mt-32'>
+        <FaqBanner />
+      </div>
       <div className="flex flex-col md:flex-row gap-6 max-w-7xl mx-auto p-4">
         {/* Sidebar */}
         <div className="md:w-1/4">

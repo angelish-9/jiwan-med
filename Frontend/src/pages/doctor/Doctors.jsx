@@ -58,7 +58,7 @@ const Doctors = () => {
         <nav className="fixed top-0 left-0 w-full z-50 bg-white shadow">
           <Navbar />
         </nav>
-    <section className="container mt-52 mx-auto px-4 py-8">
+    <section className="container mt-28 mx-auto px-4 py-8">
       <h2 className="text-3xl font-bold text-center mb-8">OUR DOCTORS</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {doctors.map((doc, index) => (
