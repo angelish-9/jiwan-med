@@ -69,7 +69,7 @@ orderRouter.get('/all', adminAuth, async (req, res) => {
 
 orderRouter.put('/:id/status', adminAuth, async (req, res) => {
     const { status } = req.body;
-    const validStatuses = ['Pending', 'Shipped', 'Delivered', 'Canceled'];
+    const validStatuses = ['Pending', 'Shipped', 'Delivered', 'Canceled', 'Completed'];
 
     // Check if the status is valid
     if (!validStatuses.includes(status)) {
