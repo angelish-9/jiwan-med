@@ -57,7 +57,7 @@ app.use('/api/user', userRouter);
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRouter);
 app.use('/api/cart', cartRouter);
-app.use('/api/chat', chatRoutes); 
+app.use('/api/chat', chatRoutes);
 app.use('/api/order', orderRouter);
 app.use('/api/promocode', promocodeRouter);
 app.use("/api/appointments", appointmentRouter);
@@ -72,22 +72,15 @@ io.on('connection', (socket) => {
   });
 
   socket.on('send_private_message', async (data) => {
-    const { senderId, senderName, receiverId, message, roomId } = data;
-
     try {
-      const newMessage = new Message({
-        senderId,
-        senderName,
-        receiverId,
-        roomId,
-        message,
-      });
+      if (!data.roomId || !data.message || !data.senderId) {
+        console.error("⚠️ Invalid message data:", data);
+        return;
+      }
 
-      await newMessage.save();
-
-      io.to(roomId).emit('receive_private_message', newMessage);
+      io.to(data.roomId).emit('receive_private_message', data);
     } catch (error) {
-      console.error('💥 Message save error:', error);
+      console.error('💥 Message handling error:', error);
     }
   });
 

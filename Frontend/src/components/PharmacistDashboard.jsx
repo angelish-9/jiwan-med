@@ -1,59 +1,79 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import ChatComponent from './ChatComponent';  // Chat component to display the chat and reply
+import ChatComponent from './ChatComponent';
 
 const PharmacistDashboard = () => {
   const [messages, setMessages] = useState([]);
+  const [uniqueSenders, setUniqueSenders] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
 
-  // Fetch all messages from the backend
   useEffect(() => {
-    axios.get('http://localhost:5000/api/chat/messages')  // Replace with the correct API to get messages
+    axios.get('http://localhost:5000/api/chat/messages')
       .then(response => {
-        setMessages(response.data);
+        const messageData = response.data;
+
+        // Use a Map to track unique senderIds and senderNames
+        const uniqueSenderMap = new Map();
+
+        // Loop through all messages and add unique senders
+        messageData.forEach(msg => {
+          if (!uniqueSenderMap.has(msg.senderId)) {
+            uniqueSenderMap.set(msg.senderId, {
+              senderId: msg.senderId,
+              senderName: msg.senderName,
+            });
+          }
+        });
+
+        // Convert map values to an array
+        setUniqueSenders([...uniqueSenderMap.values()]);
       })
       .catch(error => console.error('Error fetching messages:', error));
   }, []);
 
-  // Handle selecting a chat
   const handleChatSelect = (userId, userName) => {
     setCurrentChat({ receiverId: userId, receiverName: userName });
   };
 
   return (
-    <div className="min-h-screen p-6">
-      <h1 className="text-2xl font-semibold mb-4">Pharmacist Dashboard</h1>
-      <div className="flex">
-        {/* List of all messages */}
-        <div className="w-1/3 p-4 border-r">
-          <h2 className="text-lg font-semibold mb-2">All Messages</h2>
-          <ul className="space-y-2">
-            {messages.map((msg, index) => (
+    <div className="min-h-screen bg-gray-50 p-6">
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">Pharmacist Dashboard</h1>
+      <div className="flex flex-col lg:flex-row bg-white rounded-xl shadow-lg overflow-hidden">
+        {/* Message List */}
+        <div className="lg:w-1/3 border-r border-gray-200 h-96 overflow-y-auto">
+          <div className="p-4 border-b bg-gray-100 font-semibold text-gray-700">
+            All Messages
+          </div>
+          <ul className="divide-y divide-gray-100">
+            {uniqueSenders.map((msg, index) => (
               <li key={index}>
                 <button
-                  className="w-full text-left p-2 hover:bg-gray-100 rounded"
                   onClick={() => handleChatSelect(msg.senderId, msg.senderName)}
+                  className="w-full text-left px-4 py-3 hover:bg-gray-100 focus:outline-none transition"
                 >
-                  Chat with {msg.senderName}
+                  <div className="font-medium text-gray-800">{msg.senderName}</div>
                 </button>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Display the selected chat */}
-        {currentChat && (
-          <div className="w-2/3 p-4">
+        {/* Chat Component */}
+        <div className="lg:w-2/3 p-6">
+          {currentChat ? (
             <ChatComponent
               receiverId={currentChat.receiverId}
               receiverName={currentChat.receiverName}
             />
-          </div>
-        )}
+          ) : (
+            <div className="text-center text-gray-500 mt-10">
+              Select a user to view the chat.
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
 };
 
 export default PharmacistDashboard;
-

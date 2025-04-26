@@ -2,7 +2,6 @@ import express from 'express';
 import Message from '../models/Message.js';
 import dotenv from 'dotenv';
 
-
 const router = express.Router();
 
 router.get('/messages', async (req, res) => {
@@ -29,11 +28,16 @@ router.get('/history/:roomId', async (req, res) => {
   }
 });
 
-// // Send a reply message
 // POST /api/chat/messages
 router.post('/messages', async (req, res) => {
   try {
     const { senderId, receiverId, senderName, receiverName, message, roomId } = req.body;
+
+    // Check if the message already exists in the database
+    const existingMessage = await Message.findOne({ senderId, receiverId, roomId, message });
+    if (existingMessage) {
+      return res.status(400).json({ message: 'Duplicate message' });
+    }
 
     // Create a new message
     const newMessage = new Message({
@@ -43,7 +47,7 @@ router.post('/messages', async (req, res) => {
       receiverName,
       message,
       roomId,
-      timestamp: Date.now()  // Add timestamp
+      timestamp: Date.now(),
     });
 
     // Save the message
@@ -81,6 +85,5 @@ router.get('/senders/:pharmistId', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
 
 export default router;
