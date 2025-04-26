@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import UserNavbar from './../components/Navbar';
 import PromoCodeForm from '../components/PromoCodeForm';
+import { FaTruck, FaBolt } from 'react-icons/fa';
 
 const CheckoutPage = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -23,9 +24,7 @@ const CheckoutPage = () => {
       setCartItems(items);
       const totalAmount = items.reduce((acc, item) => acc + item.productId.price * item.quantity, 0);
       setTotal(totalAmount);
-    }).catch(err => {
-      console.error("Failed to load cart", err);
-    });
+    }).catch(err => console.error("Failed to load cart", err));
   }, []);
 
   const handleDiscountUpdate = (newDiscountedTotal) => {
@@ -35,7 +34,7 @@ const CheckoutPage = () => {
 
   const placeOrder = () => {
     if (!address || !phone) {
-      alert("Please fill in both address and phone number.");
+      alert("Please enter both address and phone number.");
       return;
     }
 
@@ -51,11 +50,11 @@ const CheckoutPage = () => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       }
-    }).then(res => {
-      alert('Order placed successfully!');
+    }).then(() => {
+      alert('✅ Order placed successfully!');
       window.location.href = '/order-success';
     }).catch(err => {
-      alert('Failed to place order.');
+      alert('❌ Failed to place order.');
       console.error(err);
     });
   };
@@ -65,79 +64,113 @@ const CheckoutPage = () => {
       <nav className="fixed top-0 left-0 w-full z-50 bg-white shadow">
         <UserNavbar />
       </nav>
-      <div className="max-w-3xl mt-28 mx-auto p-6 bg-white rounded shadow">
-        <h2 className="text-2xl font-bold mb-4">Checkout</h2>
 
-        {cartItems.map(item => (
-          <div key={item._id} className="flex justify-between mb-2">
-            <span>{item.productId.name} x {item.quantity}</span>
-            <span>₹{(item.productId.price * item.quantity).toFixed(2)}</span>
+      <div className="max-w-5xl mx-auto mt-28 p-6">
+        <h2 className="text-3xl font-semibold mb-8 text-center">Your Basket</h2>
+
+        <div className="grid md:grid-cols-2 gap-8 bg-white p-6 rounded-xl shadow-md">
+          {/* Left: Items & Delivery Info */}
+          <div className="bg-gray-50 p-4 rounded-lg space-y-6 border">
+            <div>
+              {cartItems.map(item => (
+                <div key={item._id} className="flex justify-between text-gray-700 text-sm">
+                  <span>{item.productId.name} × {item.quantity}</span>
+                  <span>₹{(item.productId.price * item.quantity).toFixed(2)}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="bg-white p-4 rounded border space-y-3">
+              <p className="font-semibold text-gray-700">Delivery and Collection Info</p>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="delivery"
+                  value="standard"
+                  checked={deliveryOption === 'standard'}
+                  onChange={(e) => setDeliveryOption(e.target.value)}
+                />
+                <FaTruck className="text-green-500" />
+                <span>Standard Delivery (Free – 24-48 hrs)</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="delivery"
+                  value="emergency"
+                  checked={deliveryOption === 'emergency'}
+                  onChange={(e) => setDeliveryOption(e.target.value)}
+                />
+                <FaBolt className="text-red-500" />
+                <span>Emergency Delivery (+₹100) – within 2 hrs</span>
+              </label>
+            </div>
           </div>
-        ))}
 
-        <hr className="my-4" />
+          {/* Right: Summary & Form */}
+          <div className="bg-gray-100 p-6 rounded-lg border space-y-6">
+            <div>
+              <h3 className="text-xl font-semibold mb-4">Basket Summary</h3>
+              {cartItems.map(item => (
+                <div key={item._id} className="flex justify-between text-sm text-gray-700">
+                  <span>{item.productId.name}</span>
+                  <span>₹{(item.productId.price * item.quantity).toFixed(2)}</span>
+                </div>
+              ))}
+              <hr className="my-2" />
+              <div className="flex justify-between font-medium text-gray-800">
+                <span>Delivery:</span>
+                <span>{deliveryOption === 'emergency' ? '₹100' : 'Free'}</span>
+              </div>
+              {discountAmount > 0 && (
+                <div className="flex justify-between text-blue-600 text-sm">
+                  <span>Promo Discount:</span>
+                  <span>-₹{discountAmount.toFixed(2)}</span>
+                </div>
+              )}
+              <hr className="my-2" />
+              <div className="flex justify-between text-lg font-bold text-gray-900">
+                <span>Total:</span>
+                <span>₹{(discountedTotal ?? total + (deliveryOption === 'emergency' ? 100 : 0)).toFixed(2)}</span>
+              </div>
+            </div>
 
-        <p className="text-lg font-semibold mb-2">Total: ₹{total.toFixed(2)}</p>
-        {discountAmount > 0 && (
-          <p className="text-green-600 mb-2">Discount: ₹{discountAmount.toFixed(2)}</p>
-        )}
-        {discountedTotal !== null && (
-          <p className="text-xl font-bold mb-4">Final Amount: ₹{discountedTotal.toFixed(2)}</p>
-        )}
+            {/* Promo Code */}
+            <PromoCodeForm
+              totalAmount={total}
+              setDiscountedAmount={handleDiscountUpdate}
+            />
 
-        {/* Promo Code Form */}
-        <PromoCodeForm
-          totalAmount={total}
-          setDiscountedAmount={handleDiscountUpdate}
-        />
-
-        <div className="mb-4 mt-6">
-          <label className="block font-medium mb-2">Select Delivery Option:</label>
-          <div className="flex gap-6">
-            <label className="flex items-center gap-2">
+            {/* Address + Phone */}
+            <div className="space-y-3">
               <input
-                type="radio"
-                name="delivery"
-                value="standard"
-                checked={deliveryOption === 'standard'}
-                onChange={(e) => setDeliveryOption(e.target.value)}
+                type="text"
+                placeholder="Delivery Address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                className="w-full p-2 rounded border focus:outline-none focus:ring-2 focus:ring-blue-200"
               />
-              Standard Delivery (24-48 hrs)
-            </label>
-            <label className="flex items-center gap-2">
               <input
-                type="radio"
-                name="delivery"
-                value="emergency"
-                checked={deliveryOption === 'emergency'}
-                onChange={(e) => setDeliveryOption(e.target.value)}
+                type="text"
+                placeholder="Phone Number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full p-2 rounded border focus:outline-none focus:ring-2 focus:ring-blue-200"
               />
-              Emergency Delivery (within 2 hrs)
-            </label>
+            </div>
+
+            <button
+              onClick={placeOrder}
+              className="w-full py-3 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg transition"
+            >
+              Continue
+            </button>
           </div>
         </div>
 
-        <input
-          type="text"
-          placeholder="Delivery Address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          className="w-full p-2 border rounded mb-2"
-        />
-        <input
-          type="text"
-          placeholder="Phone Number"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          className="w-full p-2 border rounded mb-4"
-        />
-
-        <button
-          onClick={placeOrder}
-          className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition"
-        >
-          Place Order
-        </button>
+        <p className="text-center mt-6 text-sm text-blue-600 underline cursor-pointer hover:text-blue-800">
+          <a href="/cart">Back to Cart</a>
+        </p>
       </div>
     </>
   );

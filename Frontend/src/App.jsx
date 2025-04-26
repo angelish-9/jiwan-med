@@ -6,11 +6,8 @@ import Signin from './pages/Signin.jsx';
 import Signup from './pages/Signup.jsx';
 const Profile = lazy(() => import("./pages/Profile.jsx"));
 import ProductPage from './pages/ProductPage.jsx';
-import Pain from './category/pain.jsx';
 import ProductList from './components/product/ProductList.jsx';
 import SingleProduct from './components/product/SingleProduct.jsx';
-import Vitamins from './category/vitamins.jsx';
-import Wellness from './category/wellness.jsx';
 import AdminDashboard from './pages/admin/AdminDashboard.jsx';
 import Add from './pages/admin/Add.jsx';
 import EditProduct from "./pages/admin/EditProduct.jsx";
@@ -57,10 +54,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/faq" element={<FAQPage />} />
 
-          <Route path="/category/pain" element={<Pain />} />
-          <Route path="/category/vitamins" element={<Vitamins />} />
-          <Route path="/category/wellness" element={<Wellness />} />
-
+          
           <Route path="/product/:productId" element={<SingleProduct />} />
           <Route path="/list-product" element={<ProductList />} />
           <Route path="/product/:name" element={<ProductPage />} />

@@ -17,7 +17,7 @@ const Navbar = ({ setToken }) => {
     <div className='flex justify-between py-2 items-center px-[4%] bg-white shadow-md'>
       <h1 
         onClick={goHome}
-        className='text-2xl font-bold text-black cursor-pointer hover:text-blue-600 transition'
+        className='text-2xl font-bold text-black cursor-pointer hover:text-red-600 transition'
       >
         Jiwan Medico
       </h1>

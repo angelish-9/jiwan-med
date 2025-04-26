@@ -3,6 +3,12 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import UserNavbar from './../Navbar';
 import AdminNavbar from './../../components/admin/Navbar';
+import ProductCard from '../../components/ProductCard'
+import product1 from '../../assets/product1.jpeg';
+import product2 from '../../assets/product2.jpg';
+import product3 from '../../assets/product3.jpg';
+import product4 from '../../assets/product4.jpeg';
+import { ToastContainer, toast } from 'react-toastify';
 
 const SingleProduct = () => {
     const [product, setProduct] = useState(null);
@@ -52,7 +58,7 @@ const SingleProduct = () => {
             });
 
             if (response.data.success) {
-                alert('Product added to cart');
+                toast.success('Product added to cart!');
             } else {
                 alert('Error adding product to cart');
             }
@@ -102,13 +108,20 @@ const SingleProduct = () => {
     const userRole = localStorage.getItem('role');
     const isAdmin = userRole === 'admin';
 
+    // Product recommendations
+    const recommendedProducts = [
+        { image: product1, name: "Vitamin B Complex", rating: 5, reviews: 120, price: 99.99, stock: 15 },
+        { image: product2, name: "Metformin Tablets", rating: 4, reviews: 85, price: 19.99, stock: 50 },
+        { image: product3, name: "Tusq-D Cough Syrup", rating: 5, reviews: 200, price: 49.99, stock: 30 },
+        { image: product4, name: "Desire Condom", rating: 5, reviews: 200, price: 49.99, stock: 30 }
+    ];
+
     return (
         <>
             <nav className="fixed top-0 left-0 w-full z-50 bg-white shadow">
-  {isAdmin ? <AdminNavbar /> : <UserNavbar />}
-</nav>
-<div className="mt-20" /> {/* to offset the fixed navbar height */}
-
+                {isAdmin ? <AdminNavbar /> : <UserNavbar />}
+            </nav>
+            <div className="mt-20" /> {/* to offset the fixed navbar height */}
 
             {isAdmin && (
                 <div className="text-right mb-6 container mx-auto px-4">
@@ -181,6 +194,16 @@ const SingleProduct = () => {
                             </button>
                         </div>
                     </div>
+                </div>
+            </section>
+
+            {/* Product Recommendations */}
+            <section className="container mx-auto px-4 py-10">
+                <h2 className="text-2xl font-bold text-center mb-6">Recommended Products</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
+                    {recommendedProducts.map((product, index) => (
+                        <ProductCard key={index} {...product} />
+                    ))}
                 </div>
             </section>
         </>

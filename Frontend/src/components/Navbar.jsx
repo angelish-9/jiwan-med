@@ -11,15 +11,18 @@ const Navbar = () => {
   const userRole = localStorage.getItem("role");
 
   const categories = [
-    "Pain_and_Illness_Relief",
-    "Wellness_and_Fitness",
-    "Vitamins_and_Nutrition",
-    "First_Aid",
+    "Allergy_&_Cold",
+    "Ayurveda",
     "Chronic_Care",
-    "Personal_Care",
-    "Sexual Wellness",
-    "Mother_and_Baby",
+    "First_Aid",
     "Health_Devices",
+    "Mother_&_Baby",
+    "Pain_&_Illness_Relief",
+    "Personal_Care",
+    "Sexual_Wellness",
+    "Vitamins_and_Nutrition",
+    
+    
   ];
 
   const handleLogout = () => {
@@ -67,51 +70,51 @@ const Navbar = () => {
         {/* Right: Auth/Profile */}
         <div className="flex gap-4 items-center text-lg font-semibold text-black relative max-md:mt-4">
 
-          {token && userRole ? (
-            <>
-              <Link to="/cart" className="hover:text-pink-600" title="Cart">
-                <FontAwesomeIcon icon={faCartShopping} />
-              </Link>
+{token && userRole ? (
+  <>
+    <Link to="/cart" className="hover:text-red-600" title="Cart">
+      <FontAwesomeIcon icon={faCartShopping} />
+    </Link>
 
-              <Link to="/myorders" className="hover:text-pink-600" title="My Orders">
-                <FontAwesomeIcon icon={faBox} />
-              </Link>
+    <Link to="/myorders" className="hover:text-red-600" title="My Orders">
+      <FontAwesomeIcon icon={faBox} />
+    </Link>
 
-              {/* Profile Hover Menu */}
-              <div className="relative group">
-                <FontAwesomeIcon icon={faUser} className="cursor-pointer group-hover:text-pink-600" />
+    {/* Profile Hover Menu */}
+    <div className="relative group">
+      <FontAwesomeIcon icon={faUser} className="cursor-pointer group-hover:text-red-600" />
 
-                <div className="absolute hidden group-hover:flex flex-col bg-white border shadow-lg rounded py-2 px-4 top-7 right-0 z-20 min-w-[120px] text-sm">
-                  <Link to="/profile" className="hover:text-pink-600 mb-1">View Profile</Link>
-                  <button onClick={handleLogout} className="text-red-600 hover:underline text-left">
-                    <FontAwesomeIcon icon={faRightFromBracket} className="mr-2" />
-                    Logout
-                  </button>
-                </div>
-              </div>
-            </>
-          ) : (
-            <div className="relative group">
-              <FontAwesomeIcon icon={faUser} className="cursor-pointer group-hover:text-pink-600" />
+      <div className="absolute hidden group-hover:flex flex-col bg-white border shadow-lg rounded py-2 px-4 top-7 right-0 z-20 min-w-[120px] text-sm">
+        <Link to="/profile" className="hover:text-red-600 mb-1">View Profile</Link>
+        <button onClick={handleLogout} className="text-red-600 hover:underline text-left">
+          <FontAwesomeIcon icon={faRightFromBracket} className="mr-2" />
+          Logout
+        </button>
+      </div>
+    </div>
+  </>
+) : (
+  <div className="relative group">
+    <FontAwesomeIcon icon={faUser} className="cursor-pointer group-hover:text-red-600" />
 
-              <div className="absolute hidden group-hover:flex flex-col bg-white border shadow-lg rounded py-2 px-4 top-8 right-0 z-20 min-w-[120px] text-sm">
-                <Link to="/signin" className="hover:text-pink-600 mb-1">Sign In</Link>
-                <Link to="/signup" className="hover:text-pink-600">Sign Up</Link>
-              </div>
-            </div>
-          )}
-        </div>
+    <div className="absolute hidden group-hover:flex flex-col bg-white border shadow-lg rounded py-2 px-4 top-8 right-0 z-20 min-w-[120px] text-sm">
+      <Link to="/signin" className="hover:text-red-600 mb-1">Sign In</Link>
+      <Link to="/signup" className="hover:text-red-600">Sign Up</Link>
+    </div>
+  </div>
+)}
+</div>
 
       </nav>
 
 
       {/* Category Navigation */}
-      <div className="container mx-auto flex justify-center space-x-6 py-4 text-base text-black bg-gray-100">
-        {categories.map((cat) => (
+      <div className="w-full flex justify-center gap-8 py-4 text-base text-black bg-gray-100">
+      {categories.map((cat) => (
           <Link
             key={cat.toLowerCase()}
             to={`/product/category/${cat.toLowerCase()}`}
-            className="hover:text-pink-600 capitalize"
+            className="hover:text-red-600 capitalize"
           >
             {cat.replaceAll("_", " ")}
           </Link>

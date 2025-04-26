@@ -83,7 +83,7 @@ const CategoryProducts = () => {
                 className="w-full h-48 object-cover rounded-md"
               />
               <h3 className="text-lg font-medium text-gray-900 mt-3">{product.name}</h3>
-              <p className="text-pink-600 font-semibold mb-2">${product.price}</p>
+              <p className="text-red-600 text-left font-semibold mb-2">${product.price}</p>
             
               <div className="flex items-center justify-between mt-auto">
                 <Link
@@ -96,7 +96,7 @@ const CategoryProducts = () => {
   className={`text-white text-sm px-3 py-1 rounded-full flex items-center gap-2 transition ${
     product.countInStock === 0
       ? 'bg-gray-400 cursor-not-allowed'
-      : 'bg-pink-600 hover:bg-pink-700'
+      : 'bg-red-500 hover:bg-red-600'
   }`}
   disabled={product.countInStock === 0}
   onClick={() => handleAddToCart(product._id)}
