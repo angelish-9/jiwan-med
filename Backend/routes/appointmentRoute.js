@@ -78,6 +78,21 @@ appointmentRouter.delete("/cancel/:appointmentId", verifyToken, isDoctor, async 
   }
 });
 
+// PUT /api/appointments/:id
+appointmentRouter.put("/:appointmentId", async (req, res) => {
+  try {
+    const updated = await Appointment.findByIdAndUpdate(
+      req.params.id,
+      { status: req.body.status },
+      { new: true }
+    );
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update status" });
+  }
+});
+
+
 // Create Appointment
 appointmentRouter.post("/", verifyToken, async (req, res) => {
   try {

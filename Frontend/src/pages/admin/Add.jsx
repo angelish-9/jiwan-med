@@ -4,6 +4,14 @@ import axios from "axios";
 
 import Sidebar from "./../../components/admin/Sidebar";
 import Navbar from "./../../components/admin/Navbar";
+import {
+  BiSolidPackage,
+  BiDetail,
+  BiDollarCircle,
+  BiCategoryAlt,
+  BiImageAdd,
+  BiRocket,
+} from "react-icons/bi";
 
 const Add = () => {
   const navigate = useNavigate();
@@ -55,12 +63,16 @@ const Add = () => {
 
       const token = localStorage.getItem("token");
 
-      const response = await axios.post("http://localhost:5000/api/products/add", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:5000/api/products/add",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       setMessage(response.data.message);
       setProduct({
@@ -82,89 +94,136 @@ const Add = () => {
   return (
     <>
       <Navbar />
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen bg-gray-100">
         <Sidebar />
-        <div className="flex-1 p-8 bg-gray-50">
-          <h2 className="text-2xl font-bold mb-6">Add New Product</h2>
-          {message && <p className="mb-4 text-green-600">{message}</p>}
+        <div className="flex-1 p-10">
+          <div className="bg-white p-8 rounded-xl shadow-lg max-w-3xl mx-auto">
+            <h2 className="text-3xl font-bold mb-6 text-red-700 flex items-center gap-2">
+              <BiSolidPackage size={30} />
+              Add New Product
+            </h2>
 
-          <form onSubmit={handleSubmit} className="space-y-5 max-w-xl">
-            <input
-              type="text"
-              name="name"
-              placeholder="Product Name"
-              onChange={handleChange}
-              value={product.name}
-              required
-              className="w-full p-3 border rounded"
-            />
+            {message && (
+              <div className="mb-4 text-center text-sm font-semibold text-green-600">
+                {message}
+              </div>
+            )}
 
-            <textarea
-              name="description"
-              placeholder="Description"
-              onChange={handleChange}
-              value={product.description}
-              required
-              className="w-full p-3 border rounded"
-            ></textarea>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Product Name */}
+              <div>
+                <label className="block font-medium mb-1 text-gray-700 flex items-center gap-2">
+                  <BiSolidPackage /> Product Name
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Enter product name"
+                  value={product.name}
+                  onChange={handleChange}
+                  required
+                  className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500"
+                />
+              </div>
 
-            <input
-              type="number"
-              name="price"
-              placeholder="Price"
-              onChange={handleChange}
-              value={product.price}
-              required
-              className="w-full p-3 border rounded"
-            />
+              {/* Description */}
+              <div>
+                <label className="block font-medium mb-1 text-gray-700 flex items-center gap-2">
+                  <BiDetail /> Description
+                </label>
+                <textarea
+                  name="description"
+                  placeholder="Enter description"
+                  value={product.description}
+                  onChange={handleChange}
+                  required
+                  rows={3}
+                  className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500"
+                />
+              </div>
 
-            <label className="block">
-              <span className="block mb-1 font-medium">Category</span>
-              <select
-                name="category"
-                onChange={handleChange}
-                value={product.category}
-                required
-                className="w-full p-3 border rounded"
+              {/* Price */}
+              <div>
+                <label className="block font-medium mb-1 text-gray-700 flex items-center gap-2">
+                  <BiDollarCircle /> Price (₹)
+                </label>
+                <input
+                  type="number"
+                  name="price"
+                  placeholder="Enter price"
+                  value={product.price}
+                  onChange={handleChange}
+                  required
+                  className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500"
+                />
+              </div>
+
+              {/* Category */}
+              <div>
+                <label className="block font-medium mb-1 text-gray-700 flex items-center gap-2">
+                  <BiCategoryAlt /> Category
+                </label>
+                <select
+                  name="category"
+                  value={product.category}
+                  onChange={handleChange}
+                  required
+                  className="w-full border border-gray-300 rounded-lg p-3 bg-white focus:outline-none focus:ring-2 focus:ring-red-500"
+                >
+                  <option value="">Select a Category</option>
+                  <option value="allergy_&_cold">Allergy and Cold</option>
+                  <option value="ayurveda">Ayurveda</option>
+                  <option value="chronic_care">Chronic Care</option>
+                  <option value="first_aid">First Aid</option>
+                  <option value="health_devices">Health Devices</option>
+                  <option value="mother_&_baby">Mother and Baby</option>
+                  <option value="pain_&_illness_relief">Pain & Illness Relief</option>
+                  <option value="personal_care">Personal Care</option>
+                  <option value="sexual_wellness">Sexual Wellness</option>
+                  <option value="vitamins_&_nutrition">Vitamins & Nutrition</option>
+                </select>
+              </div>
+
+              {/* Bestseller */}
+              <div>
+                <label className="block font-medium mb-1 text-gray-700 flex items-center gap-2">
+                  <BiRocket /> Bestseller
+                </label>
+                <select
+                  name="bestseller"
+                  value={product.bestseller}
+                  onChange={handleChange}
+                  className="w-full border border-gray-300 rounded-lg p-3 bg-white focus:outline-none focus:ring-2 focus:ring-red-500"
+                >
+                  <option value={false}>No</option>
+                  <option value={true}>Yes</option>
+                </select>
+              </div>
+
+              {/* Image Upload */}
+              <div>
+                <label className="block font-medium mb-1 text-gray-700 flex items-center gap-2">
+                  <BiImageAdd /> Product Image
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  required
+                  className="w-full border border-gray-300 rounded-lg p-3 bg-white focus:outline-none"
+                />
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 w-full"
               >
-                <option value="">Select a Category</option>
-                <option value="pain_and_illness_relief">Pain & Illness Relief</option>
-                <option value="wellness_and_fitness">Wellness & Fitness</option>
-                <option value="vitamins_and_nutrition">Vitamins and Nutrition</option>
-                <option value="first_aid">First Aid</option>
-                <option value="chronic_care">Chronic Care</option>
-                <option value="personal_care">Personal Care</option>
-              </select>
-            </label>
-
-            <label className="block">
-              <span className="block mb-1 font-medium">Bestseller</span>
-              <select
-                name="bestseller"
-                onChange={handleChange}
-                value={product.bestseller}
-                className="w-full p-3 border rounded"
-              >
-                <option value="false">No</option>
-                <option value="true">Yes</option>
-              </select>
-            </label>
-
-            <input
-              type="file"
-              onChange={handleFileChange}
-              required
-              className="w-full"
-            />
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700"
-            >
-              {loading ? "Adding..." : "Add Product"}
-            </button>
-          </form>
+                {loading ? "Adding..." : "Add Product"}
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </>

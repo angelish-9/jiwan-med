@@ -70,7 +70,7 @@ const SignIn = () => {
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
           <div>
-            <label htmlFor="username" className="block text-gray-700 font-medium">
+            <label htmlFor="username" className="block text-left text-gray-700 font-medium">
               Username
             </label>
             <input
@@ -84,7 +84,7 @@ const SignIn = () => {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-gray-700 font-medium">
+            <label htmlFor="password" className="block text-left text-gray-700 font-medium">
               Password
             </label>
             <input

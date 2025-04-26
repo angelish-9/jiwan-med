@@ -1,80 +1,83 @@
 import { NavLink } from 'react-router-dom';
-import { BiPlusCircle } from 'react-icons/bi';
-import { HiOutlineReceiptRefund } from 'react-icons/hi';
-import { MdList } from 'react-icons/md';
+import {
+  BiPlusCircle,
+  BiUserCheck,
+  BiSolidOffer,
+  BiCalendarCheck,
+} from 'react-icons/bi';
+import { HiOutlineShoppingBag, HiOutlineClipboardList } from 'react-icons/hi';
 
 const Sidebar = () => {
   const role = localStorage.getItem('role');
 
   if (role !== 'admin') return null;
 
-  const linkClass =
-    'flex items-center gap-3 px-4 py-3 rounded-lg text-white hover:bg-white hover:text-black transition-all duration-200';
+  const links = [
+    {
+      to: '/admin/add',
+      icon: <BiPlusCircle size={20} />,
+      label: 'Add Product',
+    },
+    {
+      to: '/list-product',
+      icon: <HiOutlineClipboardList size={20} />,
+      label: 'Product List',
+    },
+    {
+      to: '/admin/orders',
+      icon: <HiOutlineShoppingBag size={20} />,
+      label: 'Orders',
+    },
+    {
+      to: '/admin/update-role',
+      icon: <BiUserCheck size={20} />,
+      label: 'User Roles',
+    },
+    {
+      to: '/admin/promocodes',
+      icon: <BiSolidOffer size={20} />,
+      label: 'Promo Codes',
+    },
+    {
+      to: '/admin/appointment-list',
+      icon: <BiCalendarCheck size={20} />,
+      label: 'Appointments',
+    },
+  ];
 
-  const activeClass =
-    'bg-white text-black shadow-md';
+  const linkClass =
+    'flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-300';
+
+  const defaultStyle = 'text-gray-200 hover:bg-red-500 hover:text-white';
+  const activeStyle = 'bg-white text-red-900 shadow-md';
 
   return (
-    <div className='w-[18%] min-h-screen bg-gradient-to-b from-indigo-600 to-indigo-800 px-4 py-6 shadow-lg'>
-      <h2 className="text-white text-xl font-bold mb-10 text-center">Admin Panel</h2>
-      <div className='flex flex-col gap-4'>
-        <NavLink
-          to='/admin/add'
-          className={({ isActive }) =>
-            `${linkClass} ${isActive ? activeClass : ''}`
-          }
-        >
-          <BiPlusCircle size={24} />
-          <span className='hidden md:block'>Add Items</span>
-        </NavLink>
+    <aside className="w-[18%] min-h-screen bg-gradient-to-b from-red-700 to-red-800 px-4 py-6 shadow-xl flex flex-col justify-between">
+      <div>
+        <h1 className="text-white text-2xl font-bold mb-8 text-center tracking-wide">
+          Admin Panel
+        </h1>
 
-        <NavLink
-          to='/list-product'
-          className={({ isActive }) =>
-            `${linkClass} ${isActive ? activeClass : ''}`
-          }
-        >
-          <MdList size={24} />
-          <span className='hidden md:block'>List Items</span>
-        </NavLink>
-
-        <NavLink
-          to='/admin/orders'
-          className={({ isActive }) =>
-            `${linkClass} ${isActive ? activeClass : ''}`
-          }
-        >
-          <HiOutlineReceiptRefund size={24} />
-          <span className='hidden md:block'>Orders</span>
-        </NavLink>
-
-        <NavLink
-          to='/admin/update-role'
-          className={({ isActive }) =>
-            `${linkClass} ${isActive ? activeClass : ''}`
-          }
-        >
-          <BiPlusCircle size={24} />
-          <span className='hidden md:block'>Update Users Role</span>
-        </NavLink>
-
-        <NavLink
-          className="flex items-center gap-3 px-4 py-3 rounded-md transition-all hover:bg-pink-600 hover:text-white"
-          to="/admin/promocodes"
-        >
-          <HiOutlineReceiptRefund size={25} />
-          <p className="hidden md:block">Promocodes</p>
-        </NavLink>
-
-        <NavLink
-          className="flex items-center gap-3 px-4 py-3 rounded-md transition-all hover:bg-pink-600 hover:text-white"
-          to="/admin/appointment-list"
-        >
-          <HiOutlineReceiptRefund size={25} />
-          <p className="hidden md:block">All Appointments</p>
-        </NavLink>
+        <nav className="flex flex-col gap-2">
+          {links.map(({ to, icon, label }) => (
+            <NavLink
+              key={to}
+              to={to}
+              className={({ isActive }) =>
+                `${linkClass} ${isActive ? activeStyle : defaultStyle}`
+              }
+            >
+              {icon}
+              <span className="hidden md:block">{label}</span>
+            </NavLink>
+          ))}
+        </nav>
       </div>
-    </div>
+
+      <footer className="text-center text-xs text-gray-400 mt-10">
+        &copy; {new Date().getFullYear()} Jiwan Medico
+      </footer>
+    </aside>
   );
 };
 

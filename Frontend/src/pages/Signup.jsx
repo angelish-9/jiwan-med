@@ -65,14 +65,13 @@ const Signup = () => {
             <button
               onClick={handleSignInClick}
               className="text-blue-600 underline hover:text-blue-800"
-            >
-              Sign in
+            ><a href="/signin">Sign in</a>
             </button>
           </p>
 
           <form onSubmit={handleSubmit} className="mt-6">
             <div className="mb-4">
-              <label className="block text-gray-700">Email</label>
+              <label className="block text-left text-gray-700">Email</label>
               <input
                 type="email"
                 name="email"
@@ -84,7 +83,7 @@ const Signup = () => {
             </div>
 
             <div className="mb-4">
-              <label className="block text-gray-700">Username</label>
+              <label className="block text-left text-gray-700">Username</label>
               <input
                 type="text"
                 name="username"
@@ -96,7 +95,7 @@ const Signup = () => {
             </div>
 
             <div className="mb-4">
-              <label className="block text-gray-700">Password</label>
+              <label className="block text-left text-gray-700">Password</label>
               <input
                 type="password"
                 name="password"
@@ -108,7 +107,7 @@ const Signup = () => {
             </div>
 
             <div className="mb-4">
-              <label className="block text-gray-700">Address</label>
+              <label className="block text-left text-gray-700">Address</label>
               <input
                 type="text"
                 name="address"

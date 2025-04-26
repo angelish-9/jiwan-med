@@ -7,6 +7,14 @@ import nodemailer from 'nodemailer'; // To send email
 
 const orderRouter = express.Router();
 
+orderRouter.get('/my', verifyToken, async (req, res) => {
+    try {
+        const orders = await Order.find({ user: req.user._id }).populate('items.productId').sort({ createdAt: -1 });
+        res.json({ orders });
+    } catch (err) {
+        res.status(500).json({ message: 'Failed to fetch orders.' });
+    }
+});
 // Add your order place route here
 orderRouter.post('/place', verifyToken, async (req, res) => {
     const { items, total, address, phone, deliveryOption } = req.body;
