@@ -54,12 +54,11 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/faq" element={<FAQPage />} />
 
-          
           <Route path="/product/:productId" element={<SingleProduct />} />
           <Route path="/list-product" element={<ProductList />} />
           <Route path="/product/:name" element={<ProductPage />} />
 
-          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/add" element={<Add token={token} />} />
           <Route path="/admin/edit/:productId" element={<EditProduct />} />
           <Route path="/admin/update-role" element={<UpdateRole token={token} />} />
@@ -81,7 +80,7 @@ function App() {
           {/* Add the ChatComponent route */}
           <Route path="/consult-pharmacists" element={<ChatComponent receiverId={pharmacistId} receiverName={pharmacistName} />} />
 
-          <Route path="/pharmacist-dashboard" element={<PharmacistDashboard />} />  {/* Dashboard Page */}
+          <Route path="/pharmacist-inbox" element={<PharmacistDashboard />} /> 
 
           {/* Optionally, a fallback route: */}
           {/* <Route path="*" element={<Navigate to="/home" />} /> */}

@@ -33,9 +33,10 @@ const orderSchema = new mongoose.Schema({
         default: 'Pending', // Other values: Shipped, Delivered, Cancelled
     },
     deliveryOption: {
-         type: String,
-         enum: ['standard', 'emergency'],
-         required: true }, 
+        type: String,
+        enum: ['standard', 'emergency'],
+        required: true
+    },
     createdAt: {
         type: Date,
         default: Date.now,

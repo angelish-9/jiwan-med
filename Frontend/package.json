@@ -15,11 +15,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "axios": "^1.8.4",
-<<<<<<< HEAD
-    "dompurify": "^3.2.5",
-=======
     "frontend": "file:",
->>>>>>> 0bf21cf77effa6758492ff871b80f20e9d27cfd3
     "lucide-react": "^0.501.0",
     "nodemailer": "^6.10.1",
     "prop-types": "^15.8.1",

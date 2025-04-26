@@ -14,6 +14,11 @@ const Sidebar = () => {
 
   const links = [
     {
+      to: '/admin/dashboard',
+      icon: <BiSolidOffer size={20} />,
+      label: 'Dashboard',
+    },
+    {
       to: '/admin/add',
       icon: <BiPlusCircle size={20} />,
       label: 'Add Product',

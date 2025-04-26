@@ -30,7 +30,7 @@ const SignIn = () => {
 
         // ✅ Redirect based on role
         if (data.role === 'admin') {
-          navigate('/admin');
+          navigate('/admin/dashboard');
         } else {
           navigate('/');
         }

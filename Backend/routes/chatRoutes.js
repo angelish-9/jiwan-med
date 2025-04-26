@@ -1,8 +1,53 @@
 import express from 'express';
+import fs from 'fs';
+import path from 'path';
+import multer from 'multer';
 import Message from '../models/Message.js';
 import dotenv from 'dotenv';
 
+// Set storage for images
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadPath = 'uploads/chat_images/';
+
+    // Check if folder exists, if not, create it
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+
+    cb(null, uploadPath);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + '-' + file.originalname);
+  },
+});
+
+const upload = multer({ storage });
+
 const router = express.Router();
+
+// Upload image route
+router.post('/upload-image', upload.single('image'), async (req, res) => {
+  const { senderId, senderName, receiverId, roomId } = req.body;
+  console.log('Received image upload:', req.body);
+
+  if (!req.file) return res.status(400).send('No image uploaded.');
+
+  const newMessage = new Message({
+    senderId,
+    senderName,
+    receiverId,
+    roomId,
+    message: "", // Empty text
+    imageUrl: req.file.path,
+    timestamp: new Date(),
+  });
+
+  await newMessage.save();
+
+  res.json(newMessage);
+});
 
 router.get('/messages', async (req, res) => {
   try {
@@ -33,13 +78,6 @@ router.post('/messages', async (req, res) => {
   try {
     const { senderId, receiverId, senderName, receiverName, message, roomId } = req.body;
 
-    // Check if the message already exists in the database
-    const existingMessage = await Message.findOne({ senderId, receiverId, roomId, message });
-    if (existingMessage) {
-      return res.status(400).json({ message: 'Duplicate message' });
-    }
-
-    // Create a new message
     const newMessage = new Message({
       senderId,
       senderName,
@@ -50,7 +88,6 @@ router.post('/messages', async (req, res) => {
       timestamp: Date.now(),
     });
 
-    // Save the message
     await newMessage.save();
     res.status(201).json(newMessage);
   } catch (error) {

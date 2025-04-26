@@ -5,7 +5,8 @@ const messageSchema = new mongoose.Schema({
   senderName: String,
   receiverId: { type: String, required: true },
   roomId: { type: String, required: true },
-  message: { type: String, required: true },
+  message: { type: String },
+  imageUrl: { type: String },
   timestamp: { type: Date, default: Date.now },
 });
 

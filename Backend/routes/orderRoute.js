@@ -7,26 +7,14 @@ import nodemailer from 'nodemailer'; // To send email
 
 const orderRouter = express.Router();
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 0bf21cf77effa6758492ff871b80f20e9d27cfd3
 orderRouter.get('/my', verifyToken, async (req, res) => {
     try {
         const orders = await Order.find({ user: req.user._id }).populate('items.productId').sort({ createdAt: -1 });
         res.json({ orders });
     } catch (err) {
-<<<<<<< HEAD
         res.status(500).json({ message: 'Failed to fetch orders.' });
     }
 });
-
-
-=======
-        res.status(500).json({ message: 'Failed to fetch orders.' });
-    }
-});
->>>>>>> 0bf21cf77effa6758492ff871b80f20e9d27cfd3
 // Add your order place route here
 orderRouter.post('/place', verifyToken, async (req, res) => {
     const { items, total, address, phone, deliveryOption } = req.body;
@@ -42,43 +30,43 @@ orderRouter.post('/place', verifyToken, async (req, res) => {
             total,
             address,
             phone,
-            deliveryOption, // Add deliveryOption to the order
+            deliveryOption,
         });
 
         await order.save();
 
-        // If the delivery option is 'emergency', send an email to the admin
-        if (deliveryOption === 'emergency') {
-            // Send an email to the admin (you can replace this with actual admin email logic)
-            const transporter = nodemailer.createTransport({
-                service: 'gmail',
-                auth: {
-                    user: 'bajracharya.alish587@gmail.com', // Your email
-                    pass: 'admin', // Your email password or app password
-                },
-            });
+        // // If the delivery option is 'emergency', send an email to the admin
+        // if (deliveryOption === 'emergency') {
+        //     // Send an email to the admin (you can replace this with actual admin email logic)
+        //     const transporter = nodemailer.createTransport({
+        //         service: 'gmail',
+        //         auth: {
+        //             user: 'bajracharya.alish587@gmail.com', // Your email
+        //             pass: 'admin', // Your email password or app password
+        //         },
+        //     });
 
-            const mailOptions = {
-                from: 'your-email@gmail.com',
-                to: 'admin-email@example.com', // Admin email to receive notifications
-                subject: 'New Emergency Order Placed',
-                text: `A new emergency order has been placed with the following details:
-                    Order ID: ${order._id}
-                    User: ${req.user._id}
-                    Delivery Address: ${address}
-                    Phone Number: ${phone}
-                    Total: ₹${total.toFixed(2)}
-                    Delivery Option: Emergency`,
-            };
+        //     const mailOptions = {
+        //         from: 'your-email@gmail.com',
+        //         to: 'admin-email@example.com', // Admin email to receive notifications
+        //         subject: 'New Emergency Order Placed',
+        //         text: `A new emergency order has been placed with the following details:
+        //             Order ID: ${order._id}
+        //             User: ${req.user._id}
+        //             Delivery Address: ${address}
+        //             Phone Number: ${phone}
+        //             Total: ₹${total.toFixed(2)}
+        //             Delivery Option: Emergency`,
+        //     };
 
-            transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    console.error('Error sending email:', error);
-                } else {
-                    console.log('Email sent: ' + info.response);
-                }
-            });
-        }
+        //     transporter.sendMail(mailOptions, (error, info) => {
+        //         if (error) {
+        //             console.error('Error sending email:', error);
+        //         } else {
+        //             console.log('Email sent: ' + info.response);
+        //         }
+        //     });
+        // }
 
         const updatedCart = await Cart.findOneAndUpdate(
             { userId: req.user._id },
@@ -142,4 +130,20 @@ orderRouter.put('/:id/status', adminAuth, async (req, res) => {
     }
 });
 
-export default orderRouter
+orderRouter.get('/emergency-orders', async (req, res) => {
+    try {
+        const orders = await Order.find({
+            deliveryOption: 'emergency',
+            status: { $in: ['Pending', 'Shipped'] }
+        })
+        .populate('user', 'name email')
+        .populate('items.productId');
+
+        res.status(200).json(orders);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching orders', error });
+    }
+});
+
+export default orderRouter;
+

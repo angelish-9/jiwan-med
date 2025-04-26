@@ -73,7 +73,7 @@ io.on('connection', (socket) => {
 
   socket.on('send_private_message', async (data) => {
     try {
-      if (!data.roomId || !data.message || !data.senderId) {
+      if (!data.roomId  || !data.senderId) {
         console.error("⚠️ Invalid message data:", data);
         return;
       }

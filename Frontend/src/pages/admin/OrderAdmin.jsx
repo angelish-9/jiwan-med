@@ -65,13 +65,12 @@ const AdminOrdersPage = () => {
             <button
               key={status}
               onClick={() => handleStatusChange(order._id, status)}
-              className={`px-3 py-1.5 rounded text-sm font-medium text-white transition duration-150 ${
-                status === 'Pending' ? 'bg-yellow-500 hover:bg-yellow-600' :
+              className={`px-3 py-1.5 rounded text-sm font-medium text-white transition duration-150 ${status === 'Pending' ? 'bg-yellow-500 hover:bg-yellow-600' :
                 status === 'Shipped' ? 'bg-blue-500 hover:bg-blue-600' :
-                status === 'Delivered' ? 'bg-green-500 hover:bg-green-600' :
-                status === 'Canceled' ? 'bg-red-500 hover:bg-red-600' :
-                status === 'Completed' ? 'bg-gray-700 hover:bg-gray-800' : ''
-              }`}
+                  status === 'Delivered' ? 'bg-green-500 hover:bg-green-600' :
+                    status === 'Canceled' ? 'bg-red-500 hover:bg-red-600' :
+                      status === 'Completed' ? 'bg-gray-700 hover:bg-gray-800' : ''
+                }`}
             >
               Mark as {status}
             </button>
@@ -114,11 +113,10 @@ const AdminOrdersPage = () => {
               <button
                 key={status}
                 onClick={() => setFilter(status)}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium border transition ${
-                  filter === status
-                    ? 'bg-red-600 text-white border-red-600'
-                    : 'bg-white text-gray-700 border-gray-300 hover:bg-red-100'
-                }`}
+                className={`px-4 py-1.5 rounded-full text-sm font-medium border transition ${filter === status
+                  ? 'bg-red-600 text-white border-red-600'
+                  : 'bg-white text-gray-700 border-gray-300 hover:bg-red-100'
+                  }`}
               >
                 {status}
               </button>
@@ -132,7 +130,12 @@ const AdminOrdersPage = () => {
               {filteredOrders.map((order, idx) => (
                 <div key={order._id} className="bg-white p-5 rounded-lg border shadow-sm">
                   <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold">Order #{idx + 1}</h3>
+                    <div className="flex items-center">
+                      <h3 className="text-lg font-semibold">Order #{idx + 1}</h3>
+                      {order.deliveryOption === 'emergency' && (
+                        <span className="ml-3 px-2 py-1 bg-red-500 text-white text-xs font-semibold rounded">🚨 Emergency Delivery</span>
+                      )}
+                    </div>
                     {getStatusBadge(order.status)}
                   </div>
 
